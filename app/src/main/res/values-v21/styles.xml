@@ -13,6 +13,10 @@
         <item name="android:windowBackground">@color/teal</item>
     </style>
 
+    <style name="hola">
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <color name="amber">#fff8e1</color>
     <style name="amber" parent="android:Theme.Material.Light.DarkActionBar">
         <item name="android:colorPrimary">#ffc107</item>

@@ -127,6 +127,10 @@ public class MainActivity extends Activity
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 return true;
+            case R.id.cerrar_sesion:
+            Intent cerrar = new Intent(this, Login.class);
+            startActivity(cerrar);
+                return true;
             default:
                 return false;
         }

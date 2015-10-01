@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RapidTurns</string>
 
+    <string name="app_name">RapidTurns</string>
     <string name="title_section1">Citas</string>
     <string name="title_section2">lista de peluquerias</string>
     <string name="title_section3">Favoritas</string>
@@ -8,14 +9,26 @@
     <string name="salir">Salir</string>
     <string name="navigation_drawer_open">Abrir Panel de navegacion</string>
     <string name="navigation_drawer_close">Cerrar Panel de navegacion</string>
-
     <string name="action_example">ejemplo</string>
-
     <string name="action_settings">Opciones</string>
-
     <string name="citas">Aqui van las citas</string>
     <string name="peluquerias">Aqui van las peluquerias</string>
     <string name="favoritas">Aqui van las favoritas</string>
     <string name="otros">Aqui van los otros</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="dialog_message">que paso</string>
+    <string name="dialog_title">Datos erroneos</string>
+    <string name="ok">Aceptar</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Logearse o Registrarse</string>
+    <string name="action_sign_in_short">Loguearse</string>
 
+    <string name="error_invalid_email">Email invalido</string>
+    <string name="error_invalid_password">Contraseña es corta</string>
+    <string name="error_incorrect_password">Contraseña incorrecta</string>
+    <string name="error_field_required">Campo Requerido</string>
+    <string name="cerrar_sesion">Cerrar Sesion</string>
 </resources>
