@@ -7,6 +7,8 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 
 /**
@@ -14,6 +16,8 @@ import android.view.ViewGroup;
  */
 public class Citas extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private ListView lista;
+    private int mCurrentSelectedPosition=0;
 
     public static Citas newInstance(int sectionNumber) {
         Citas fragment = new Citas();
@@ -31,9 +35,15 @@ public class Citas extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.citas, container, false);
+        lista = (ListView) inflater.inflate(R.layout.lista, container, false);
+        lista.setAdapter(new ArrayAdapter<String>(
+                getActivity().getActionBar().getThemedContext(),
+                R.layout.item_citas,
+                R.id.text1,getResources().getStringArray(R.array.citas)));
+        lista.setItemChecked(mCurrentSelectedPosition, true);
+        return lista;
     }
+
 
     @Override
     public void onAttach(Activity activity) {
