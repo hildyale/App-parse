@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">RapidTurns</string>
+
+    <string name="title_section1">Citas</string>
+    <string name="title_section2">lista de peluquerias</string>
+    <string name="title_section3">Favoritas</string>
+    <string name="title_section4">Otros</string>
+    <string name="salir">Salir</string>
+    <string name="navigation_drawer_open">Abrir Panel de navegacion</string>
+    <string name="navigation_drawer_close">Cerrar Panel de navegacion</string>
+
+    <string name="action_example">ejemplo</string>
+
+    <string name="action_settings">Opciones</string>
+
+    <string name="citas">Aqui van las citas</string>
+    <string name="peluquerias">Aqui van las peluquerias</string>
+    <string name="favoritas">Aqui van las favoritas</string>
+    <string name="otros">Aqui van los otros</string>
+
+</resources>
