@@ -8,6 +8,14 @@
 
     </string-array>
 
+    <string-array name="panel_optionsLocal">
+        <item>@string/title_section5</item>
+        <item>@string/title_section6</item>
+        <item>@string/title_section7</item>
+        <item>@string/title_section8</item>
+
+    </string-array>
+
     <string-array name="citas">
         <item>CHIQUITITA PLAZA PELUQUERIA INFANTIL - 15:00</item>
         <item>AL PELO - 13:00</item>

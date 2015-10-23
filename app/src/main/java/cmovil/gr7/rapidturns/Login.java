@@ -101,17 +101,22 @@ public class Login extends Activity implements LoaderCallbacks<Cursor> {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }else{
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.dialog_message)
-                    .setTitle(R.string.dialog_title);
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User clicked OK button
-                }
-            });
+            if(email.equals("local") && password.equals("")) {
+                Intent intent = new Intent(this, LocalActivity.class);
+                startActivity(intent);
+            }else{
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.dialog_message)
+                        .setTitle(R.string.dialog_title);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                    }
+                });
 
-            AlertDialog dialog = builder.create();
-            dialog.show();
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         }
     }
 

@@ -6,6 +6,10 @@
     <string name="title_section2">lista de peluquerias</string>
     <string name="title_section3">Favoritas</string>
     <string name="title_section4">Otros</string>
+    <string name="title_section5">Local</string>
+    <string name="title_section6">Otros</string>
+    <string name="title_section7">Otros</string>
+    <string name="title_section8">Otros</string>
     <string name="salir">Salir</string>
     <string name="navigation_drawer_open">Abrir Panel de navegacion</string>
     <string name="navigation_drawer_close">Cerrar Panel de navegacion</string>
@@ -25,10 +29,15 @@
     <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in">Logearse o Registrarse</string>
     <string name="action_sign_in_short">Loguearse</string>
-
     <string name="error_invalid_email">Email invalido</string>
     <string name="error_invalid_password">Contraseña es corta</string>
     <string name="error_incorrect_password">Contraseña incorrecta</string>
     <string name="error_field_required">Campo Requerido</string>
     <string name="cerrar_sesion">Cerrar Sesion</string>
+    <string name="title_activity_empleado">Empleado</string>
+    <string name="name">Nombre</string>
+    <string name="lastname">Apellido</string>
+    <string name="horario">Horario</string>
+    <string name="add">Agregar</string>
+    <string name="create">Crear</string>
 </resources>

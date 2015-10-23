@@ -1,38 +1,32 @@
 package cmovil.gr7.rapidturns;
 
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 
 
-public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class LocalActivity extends Activity
+        implements NavigationDrawerFragmentLocal.NavigationDrawerCallbacks {
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private NavigationDrawerFragmentLocal mNavigationDrawerFragment;
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
     private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_local);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
+        mNavigationDrawerFragment = (NavigationDrawerFragmentLocal)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
@@ -49,41 +43,34 @@ public class MainActivity extends Activity
             switch (position) {
                 case 0:
                     fragmentManager.beginTransaction()
-                            .replace(R.id.container, Citas.newInstance(position + 1))
+                            .replace(R.id.container, Local.newInstance(position + 1))
                             .commit();
+                    /*
+                    StatusFragment fragment = new StatusFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(android.R.id.content, fragment,  fragment.getClass().getSimpleName());
+            fragmentTransaction.commit();
+                    */
                     break;
                 case 1:
                     fragmentManager.beginTransaction()
-                            .replace(R.id.container, Peluquerias.newInstance(position + 1))
+                            .replace(R.id.container, Servicios.newInstance(position + 1))
                             .commit();
                     break;
-                case 2:
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.container, Favoritas.newInstance(position + 1))
-                            .commit();
-                    break;
-                case 3:
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.container, Otros.newInstance(position + 1))
-                            .commit();
-                    break;
+
             }
     }
 
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.title_section5);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.title_section7);
                 break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
-            case 4:
-                mTitle = getString(R.string.title_section4);
-                break;
+
         }
     }
 
@@ -171,7 +158,7 @@ public class MainActivity extends Activity
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
+            ((LocalActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }

@@ -4,8 +4,9 @@
         android:showAsAction="never" />
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" android:showAsAction="never" />
-    <item android:id="@+id/salir" android:title="@string/salir"
-        android:orderInCategory="100" android:showAsAction="never" />
     <item android:id="@+id/cerrar_sesion" android:title="@string/cerrar_sesion"
         android:orderInCategory="100" android:showAsAction="never" />
+    <item android:id="@+id/salir" android:title="@string/salir"
+        android:orderInCategory="100" android:showAsAction="never" />
+
 </menu>

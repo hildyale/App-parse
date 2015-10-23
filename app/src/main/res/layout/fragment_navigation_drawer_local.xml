@@ -5,6 +5,6 @@
     android:choiceMode="singleChoice"
     android:divider="@android:color/transparent"
     android:dividerHeight="0dp"
-    android:background="#80cbc4"
-    tools:context=".NavigationDrawerFragment"
+    android:background="#ff6f00"
+    tools:context=".NavigationDrawerFragmentLocal"
     />
