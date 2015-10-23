@@ -40,4 +40,7 @@
     <string name="horario">Horario</string>
     <string name="add">Agregar</string>
     <string name="create">Crear</string>
+    <string name="title_activity_calendar">Calendar</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

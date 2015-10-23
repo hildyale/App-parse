@@ -9,7 +9,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/icon"
+        android:icon="@drawable/icon2"
         android:label="@string/app_name"
         android:theme="@style/teal" >
         <activity
@@ -35,6 +35,10 @@
         <activity
             android:name=".Empleado"
             android:label="@string/title_activity_empleado" >
+        </activity>
+        <activity
+            android:name=".Calendar"
+            android:label="@string/title_activity_calendar" >
         </activity>
     </application>
 
