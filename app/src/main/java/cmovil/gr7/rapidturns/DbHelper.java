@@ -18,20 +18,38 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db){
         String sql=String
-                .format("create table %s(%s int primary key, %s text, %s text, %s int)",
+                .format("create table %s(%s int primary key, %s text, %s text, %s int, %s text, %s int, %s int)",
                         Contract.EMPLEADO, Contract.Column.ID,
                         Contract.Column.NAME,
                         Contract.Column.HORARIO,
-                        Contract.Column.CREATED_AT);
+                        Contract.Column.CREATED_AT,
+                        Contract.Column.SEX,
+                        Contract.Column.FROM,
+                        Contract.Column.TO);
         //Sentencia para crear tabla
         Log.d(TAG, "onCreate with SQL: " + sql);
         db.execSQL(sql);//Ejecución de la sentencia
+
+        sql=String
+                .format("create table %s(%s int primary key, %s text, %s int, %s text, %s int, %s int)",
+                        Contract.SERVICIO, Contract.Column.ID,
+                        Contract.Column.NAME,
+                        Contract.Column.HORARIO,
+                        Contract.Column.CREATED_AT,
+                        Contract.Column.FROM,
+                        Contract.Column.TO);
+        //Sentencia para crear tabla
+        Log.d(TAG, "onCreate with SQL: " + sql);
+        db.execSQL(sql);//Ejecución de la sentencia
+
     }
 
     //Se llama cada que el schema cambie(nueva versión)
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int NewVersion){
         db.execSQL("drop table if exists "+ Contract.EMPLEADO);//Borrar datos
+        onCreate(db);//Crear Tabla de nuevo
+        db.execSQL("drop table if exists "+ Contract.SERVICIO);//Borrar datos
         onCreate(db);//Crear Tabla de nuevo
     }
 

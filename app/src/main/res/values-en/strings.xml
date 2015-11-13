@@ -5,8 +5,8 @@
     <string name="title_section2">Hairdressers list</string>
     <string name="title_section3">Favorites</string>
     <string name="title_section4">Others</string>
-    <string name="title_section5">Local</string>
-    <string name="title_section6">Otros</string>
+    <string name="title_section5">Employees</string>
+    <string name="title_section6">Services</string>
     <string name="title_section7">Otros</string>
     <string name="title_section8">Otros</string>
     <string name="salir">Close</string>
@@ -27,10 +27,26 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="cerrar_sesion">Log out</string>
-    <string name="title_activity_empleado">Employee</string>
+    <string name="title_activity_empleado">Add Employee</string>
+    <string name="title_activity_servicio">Add Service</string>
     <string name="name">Name</string>
     <string name="lastname">Lastname</string>
     <string name="horario">Schedule</string>
     <string name="add">Add</string>
     <string name="create">Create</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="sex">Genre: </string>
+
+    <string name="monday">Monday </string>
+    <string name="saturday">Saturday </string>
+    <string name="tuesday">Tuesday </string>
+    <string name="wednesday">Wednesday </string>
+    <string name="thursday">Thursday </string>
+    <string name="friday">Friday </string>
+    <string name="from">From </string>
+    <string name="to">To </string>
+    <string name="errordays">Select at least one day</string>
+    <string name="error_schedule">Wrong Schedule</string>
+
 </resources>

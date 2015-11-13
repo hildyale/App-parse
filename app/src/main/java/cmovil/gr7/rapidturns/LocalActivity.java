@@ -43,19 +43,12 @@ public class LocalActivity extends Activity
             switch (position) {
                 case 0:
                     fragmentManager.beginTransaction()
-                            .replace(R.id.container, Local.newInstance(position + 1))
+                            .replace(R.id.container, MostrarEmpleados.newInstance(position + 1))
                             .commit();
-                    /*
-                    StatusFragment fragment = new StatusFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(android.R.id.content, fragment,  fragment.getClass().getSimpleName());
-            fragmentTransaction.commit();
-                    */
                     break;
                 case 1:
                     fragmentManager.beginTransaction()
-                            .replace(R.id.container, Servicios.newInstance(position + 1))
+                            .replace(R.id.container, MostrarServicios.newInstance(position + 1))
                             .commit();
                     break;
 
@@ -68,7 +61,7 @@ public class LocalActivity extends Activity
                 mTitle = getString(R.string.title_section5);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section7);
+                mTitle = getString(R.string.title_section6);
                 break;
 
         }

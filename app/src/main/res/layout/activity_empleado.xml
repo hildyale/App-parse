@@ -5,7 +5,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="cmovil.gr7.rapidturns.Empleado">
+    tools:context="cmovil.gr7.rapidturns.AgregarEmpleado">
 
     <ScrollView android:id="@+id/login_form" android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -25,7 +25,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name"
-                android:imeActionId="@+id/login"
                 android:imeActionLabel="@string/name"
                 android:imeOptions="actionUnspecified"
                 android:inputType="text"
@@ -33,23 +32,126 @@
 
             <EditText android:id="@+id/lastname" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="@string/lastname"
-                android:imeActionId="@+id/login"
                 android:imeActionLabel="@string/lastname"
                 android:imeOptions="actionUnspecified" android:inputType="text"
                 android:maxLines="1" android:singleLine="true" />
 
-            <EditText android:id="@+id/horario" android:layout_width="match_parent"
+            <TextView android:id="@+id/horario" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:hint="@string/horario"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/horario"
-                android:imeOptions="actionUnspecified" android:inputType="text"
-                android:maxLines="1" android:singleLine="true" />
+                android:paddingTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                >
+            <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/monday"
+            android:id="@+id/monday" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tuesday"
+                android:id="@+id/tuesday" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wednesday"
+                android:id="@+id/wednesday" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/thursday"
+                android:id="@+id/thursday" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/friday"
+                android:id="@+id/friday" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saturday"
+                android:id="@+id/saturday" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:hint="@string/from"
+                    android:paddingTop="10dp" />
+
+            <Spinner
+                 android:id="@+id/from"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:hint="@string/to"
+                    android:paddingTop="10dp" />
+
+            <Spinner
+                    android:id="@+id/to"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
+     </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sex"
+                android:id="@+id/textView"
+                android:paddingTop="10dp" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:id="@+id/sex"
+                >
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/male"
+                    android:id="@+id/male" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/female"
+                    android:id="@+id/female" />
+
+            </RadioGroup>
 
             <Button android:id="@+id/create" style="?android:textAppearanceSmall"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" android:text="@string/create"
                 android:textStyle="bold"
-                android:onClick="add"
                 />
 
         </LinearLayout>

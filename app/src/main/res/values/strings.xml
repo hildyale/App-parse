@@ -6,8 +6,8 @@
     <string name="title_section2">lista de peluquerias</string>
     <string name="title_section3">Favoritas</string>
     <string name="title_section4">Otros</string>
-    <string name="title_section5">Local</string>
-    <string name="title_section6">Otros</string>
+    <string name="title_section5">Empleados</string>
+    <string name="title_section6">Servicios</string>
     <string name="title_section7">Otros</string>
     <string name="title_section8">Otros</string>
     <string name="salir">Salir</string>
@@ -34,13 +34,27 @@
     <string name="error_incorrect_password">Contraseña incorrecta</string>
     <string name="error_field_required">Campo Requerido</string>
     <string name="cerrar_sesion">Cerrar Sesion</string>
-    <string name="title_activity_empleado">Empleado</string>
+    <string name="title_activity_empleado">Agregar Empleado</string>
+    <string name="title_activity_servicio">Agregar Servicio</string>
     <string name="name">Nombre</string>
     <string name="lastname">Apellido</string>
     <string name="horario">Horario</string>
     <string name="add">Agregar</string>
     <string name="create">Crear</string>
     <string name="title_activity_calendar">Calendar</string>
+    <string name="male">Masculino</string>
+    <string name="female">Femenino</string>
+    <string name="sex">Sexo: </string>
+    <string name="monday">Lunes </string>
+    <string name="saturday">Sabado </string>
+    <string name="tuesday">Martes </string>
+    <string name="wednesday">Miercoles </string>
+    <string name="thursday">Jueves </string>
+    <string name="friday">Viernes </string>
+    <string name="from">De </string>
+    <string name="to">Hasta </string>
+    <string name="errordays">Seleccione almenos un dia </string>
+    <string name="error_schedule">Horario invalido</string>
 
     <string name="hello_world">Hello world!</string>
 </resources>
