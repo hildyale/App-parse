@@ -49,22 +49,22 @@ public class MainActivity extends Activity
             switch (position) {
                 case 0:
                     fragmentManager.beginTransaction()
-                            .replace(R.id.container, Citas.newInstance(position + 1))
+                            .replace(R.id.container, MostrarCitas.newInstance(position + 1))
                             .commit();
                     break;
                 case 1:
                     fragmentManager.beginTransaction()
-                            .replace(R.id.container, Peluquerias.newInstance(position + 1))
+                            .replace(R.id.container, MostrarLocales.newInstance(position + 1))
                             .commit();
                     break;
                 case 2:
                     fragmentManager.beginTransaction()
-                            .replace(R.id.container, Favoritas.newInstance(position + 1))
+                            .replace(R.id.container, MostrarFavoritos.newInstance(position + 1))
                             .commit();
                     break;
                 case 3:
                     fragmentManager.beginTransaction()
-                            .replace(R.id.container, Otros.newInstance(position + 1))
+                            .replace(R.id.container, MostrarOtros.newInstance(position + 1))
                             .commit();
                     break;
             }

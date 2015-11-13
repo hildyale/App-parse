@@ -35,18 +35,24 @@
         <activity
             android:name=".AgregarEmpleado"
             android:label="@string/title_activity_empleado"
-            android:theme="@style/amber">
+            android:theme="@style/amber" >
         </activity>
-
         <activity
             android:name=".AgregarServicio"
             android:label="@string/title_activity_servicio"
-            android:theme="@style/amber">
+            android:theme="@style/amber" >
         </activity>
-
         <activity
             android:name=".Calendar"
             android:label="@string/title_activity_calendar" >
+        </activity>
+        <activity
+            android:name=".VerLocal"
+            android:label="@string/title_activity_ver_local" >
+        </activity>
+        <activity
+            android:name=".Reservar"
+            android:label="@string/title_activity_reservar" >
         </activity>
     </application>
 

@@ -11,6 +11,7 @@ public class Contract {
     public static final int DB_VERSION = 1;
     public static final String EMPLEADO = "empleado";
     public static final String SERVICIO = "servicio";
+    public static final String CITA = "cita";
     public static final String DEFAULT_SORT = Column.CREATED_AT + " DESC";
 
 

@@ -9,8 +9,7 @@
     android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
     android:gravity="center_vertical"
-    android:paddingStart="98px"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:layout_toRightOf="@+id/icono"
     android:background="?android:attr/activatedBackgroundIndicator"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:textColor="#000000"
@@ -19,9 +18,11 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:src="@drawable/icon"/>
+        android:id="@+id/icono"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="5dp"
+        android:src="@drawable/local"/>
 
 </RelativeLayout>

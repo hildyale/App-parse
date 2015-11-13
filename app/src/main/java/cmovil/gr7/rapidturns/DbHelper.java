@@ -42,6 +42,16 @@ public class DbHelper extends SQLiteOpenHelper {
         Log.d(TAG, "onCreate with SQL: " + sql);
         db.execSQL(sql);//Ejecución de la sentencia
 
+        sql=String
+                .format("create table %s(%s int primary key, %s text, %s int, %s int)",
+                        Contract.CITA, Contract.Column.ID,
+                        Contract.Column.NAME,
+                        Contract.Column.HORARIO,
+                        Contract.Column.CREATED_AT);
+        //Sentencia para crear tabla
+        Log.d(TAG, "onCreate with SQL: " + sql);
+        db.execSQL(sql);//Ejecución de la sentencia
+
     }
 
     //Se llama cada que el schema cambie(nueva versión)
@@ -50,6 +60,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists "+ Contract.EMPLEADO);//Borrar datos
         onCreate(db);//Crear Tabla de nuevo
         db.execSQL("drop table if exists "+ Contract.SERVICIO);//Borrar datos
+        onCreate(db);//Crear Tabla de nuevo
+        db.execSQL("drop table if exists "+ Contract.CITA);//Borrar datos
         onCreate(db);//Crear Tabla de nuevo
     }
 

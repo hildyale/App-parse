@@ -84,7 +84,7 @@ public class NavigationDrawerFragmentLocal extends Fragment {
         });
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
-                R.layout.item_citas,
+                R.layout.itemdrawer,
                 R.id.text1,
                 getResources().getStringArray(R.array.panel_optionsLocal)));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);

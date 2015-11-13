@@ -5,6 +5,7 @@ package cmovil.gr7.rapidturns;
  */
 
     import android.content.Context;
+    import android.graphics.Color;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
@@ -15,10 +16,11 @@ package cmovil.gr7.rapidturns;
     public class AdapterEmpleados extends ArrayAdapter {
 
         public Object[][] records;
-
-        public AdapterEmpleados(Context context,Object[][] A) {
+        public String color;
+        public AdapterEmpleados(Context context,Object[][] A,String a) {
             super(context, 0, A);
             records = A;
+            color = a;
         }
 
         @Override
@@ -50,6 +52,7 @@ package cmovil.gr7.rapidturns;
             //Obteniendo instancia de la Tarea en la posición actual
             nombre.setText(String.valueOf(records[position][0]));
             horario.setText(String.valueOf(records[position][1]));
+            horario.setTextColor(Color.parseColor(color));
             tiempo.setText(String.valueOf(records[position][2]));
             if(String.valueOf(records[position][3]).equals("M")) {
                 icono.setImageResource(R.drawable.man);

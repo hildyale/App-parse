@@ -14,23 +14,22 @@ import android.widget.ListView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Citas extends Fragment {
+public class MostrarFavoritos extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private ListView lista;
     private int mCurrentSelectedPosition=0;
+    private ListView lista;
 
-    public static Citas newInstance(int sectionNumber) {
-        Citas fragment = new Citas();
+    public static MostrarFavoritos newInstance(int sectionNumber) {
+        MostrarFavoritos fragment = new MostrarFavoritos();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER,sectionNumber);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public Citas() {
+    public MostrarFavoritos() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,8 +37,9 @@ public class Citas extends Fragment {
         lista = (ListView) inflater.inflate(R.layout.lista, container, false);
         lista.setAdapter(new ArrayAdapter<String>(
                 getActivity().getActionBar().getThemedContext(),
-                R.layout.item_citas,
-                R.id.text1,getResources().getStringArray(R.array.citas)));
+                R.layout.item_locales,
+                R.id.text1,
+                getResources().getStringArray(R.array.favoritas)));
         lista.setItemChecked(mCurrentSelectedPosition, true);
         return lista;
     }
@@ -50,7 +50,5 @@ public class Citas extends Fragment {
         ((MainActivity) activity).onSectionAttached(
                 getArguments().getInt(ARG_SECTION_NUMBER));
     }
-
-
 
 }

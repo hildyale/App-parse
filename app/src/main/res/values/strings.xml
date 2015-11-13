@@ -3,7 +3,7 @@
 
     <string name="app_name">RapidTurns</string>
     <string name="title_section1">Citas</string>
-    <string name="title_section2">lista de peluquerias</string>
+    <string name="title_section2">Locales</string>
     <string name="title_section3">Favoritas</string>
     <string name="title_section4">Otros</string>
     <string name="title_section5">Empleados</string>
@@ -55,6 +55,10 @@
     <string name="to">Hasta </string>
     <string name="errordays">Seleccione almenos un dia </string>
     <string name="error_schedule">Horario invalido</string>
-
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_ver_local">Ver Local</string>
+    <string name="title_activity_reservar">Reservar</string>
+    <string name="reservarCliente">Reservar con </string>
+    <string name="reservarServicio">Reservar  </string>
+
 </resources>

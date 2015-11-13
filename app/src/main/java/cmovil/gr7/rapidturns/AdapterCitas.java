@@ -10,13 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Created by hildy on 13/11/2015.
+ * Created by alejandro.isazad on 13/11/15.
  */
-public class AdapterServicios extends ArrayAdapter {
-
+public class AdapterCitas extends ArrayAdapter {
     public Object[][] records;
     public String color;
-    public AdapterServicios(Context context,Object[][] A,String a) {
+    public AdapterCitas(Context context,Object[][] A,String a) {
         super(context, 0, A);
         records = A;
         color = a;
@@ -36,7 +35,7 @@ public class AdapterServicios extends ArrayAdapter {
         if (null == convertView) {
             //Si no existe, entonces inflarlo con image_list_view.xml
             listItemView = inflater.inflate(
-                    R.layout.item_servicios,
+                    R.layout.item_citas,
                     parent,
                     false);
         }
@@ -51,7 +50,7 @@ public class AdapterServicios extends ArrayAdapter {
         nombre.setText(String.valueOf(records[position][0]));
         horario.setText(String.valueOf(records[position][1]));
         horario.setTextColor(Color.parseColor(color));
-        icono.setImageResource(R.drawable.service);
+        icono.setImageResource(R.drawable.citas);
 
 
         //Devolver al ListView la fila creada

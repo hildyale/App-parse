@@ -2,7 +2,7 @@
     <string name="app_name">RapidTurns</string>
 
     <string name="title_section1">Dates</string>
-    <string name="title_section2">Hairdressers list</string>
+    <string name="title_section2">Locals</string>
     <string name="title_section3">Favorites</string>
     <string name="title_section4">Others</string>
     <string name="title_section5">Employees</string>
@@ -48,5 +48,10 @@
     <string name="to">To </string>
     <string name="errordays">Select at least one day</string>
     <string name="error_schedule">Wrong Schedule</string>
+
+    <string name="title_activity_ver_local">Local</string>
+    <string name="title_activity_reservar">Reserve</string>
+    <string name="reservarCliente">Reserve with </string>
+    <string name="reservarServicio">Reserve  </string>
 
 </resources>

@@ -97,7 +97,7 @@ public class Login extends Activity implements LoaderCallbacks<Cursor> {
     public void sendMessage(View view) {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-        if(email.equals("admin") && password.equals("")) {
+        if(email.equals("cliente") && password.equals("")) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }else{
