@@ -19,11 +19,9 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -98,7 +96,7 @@ public class Login extends Activity implements LoaderCallbacks<Cursor> {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         if(email.equals("cliente") && password.equals("")) {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, ClientActivity.class);
             startActivity(intent);
         }else{
             if(email.equals("local") && password.equals("")) {

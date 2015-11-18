@@ -20,6 +20,9 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -68,7 +71,7 @@ public class AgregarServicio extends Activity {
         to.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
-                toPosition = pos+5;
+                toPosition = pos + 5;
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -79,27 +82,27 @@ public class AgregarServicio extends Activity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Name = name.getText()+"";
+                String Name = name.getText() + "";
                 String hora = "";
-                for(int i=0;i<6;i++){
+                for (int i = 0; i < 6; i++) {
                     horario = days[i];
-                    if(horario.isChecked()){
-                        hora = hora+daysString[i];
+                    if (horario.isChecked()) {
+                        hora = hora + daysString[i];
                     }
                 }
 
-                Date dNow = new Date( );
+                Date dNow = new Date();
                 SimpleDateFormat ft =
-                        new SimpleDateFormat ("yyyy.MM.dd");
+                        new SimpleDateFormat("yyyy.MM.dd");
 
-                if (Name.equals("")){
+                if (Name.equals("")) {
                     Error(R.string.error_field_required);
-                }else {
+                } else {
                     if (hora.equals("")) {
                         Error(R.string.errordays);
 
                     } else {
-                        if (toPosition-fromPosition<1) {
+                        if (toPosition - fromPosition < 1) {
                             Error(R.string.error_schedule);
                         } else {
 
@@ -117,6 +120,10 @@ public class AgregarServicio extends Activity {
                             db.insertWithOnConflict(Contract.SERVICIO, null, values,
                                     SQLiteDatabase.CONFLICT_IGNORE);
 
+                            ParseObject testObject = new ParseObject("Servicio");
+                            testObject.put(Contract.Column.NAME, Name);
+                            testObject.saveInBackground();
+
                             System.exit(1);
                         }
                     }
@@ -124,6 +131,8 @@ public class AgregarServicio extends Activity {
 
             }
         });
+        
+
     }
 
     public void Error (int a){
