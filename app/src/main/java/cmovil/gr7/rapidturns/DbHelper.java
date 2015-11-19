@@ -18,8 +18,8 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db){
         String sql=String
-                .format("create table %s(%s int primary key, %s text, %s text, %s int, %s text, %s int, %s int)",
-                        Contract.EMPLEADO, Contract.Column.ID,
+                .format("create table %s(%s text, %s text, %s int, %s text, %s int, %s int)",
+                        Contract.EMPLEADO,
                         Contract.Column.NAME,
                         Contract.Column.HORARIO,
                         Contract.Column.CREATED_AT,
@@ -31,8 +31,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(sql);//Ejecución de la sentencia
 
         sql=String
-                .format("create table %s(%s int primary key, %s text, %s int, %s text, %s int, %s int)",
-                        Contract.SERVICIO, Contract.Column.ID,
+                .format("create table %s(%s text, %s int, %s text, %s int, %s int)",
+                        Contract.SERVICIO,
                         Contract.Column.NAME,
                         Contract.Column.HORARIO,
                         Contract.Column.CREATED_AT,
@@ -43,8 +43,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(sql);//Ejecución de la sentencia
 
         sql=String
-                .format("create table %s(%s int primary key, %s text, %s int, %s int)",
-                        Contract.CITA, Contract.Column.ID,
+                .format("create table %s(%s text, %s int, %s int)",
+                        Contract.CITA,
                         Contract.Column.NAME,
                         Contract.Column.HORARIO,
                         Contract.Column.CREATED_AT);

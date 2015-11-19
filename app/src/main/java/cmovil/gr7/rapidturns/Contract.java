@@ -17,12 +17,12 @@ public class Contract {
 
     public class Column{
 
-        public static final String ID = BaseColumns._ID;
+        public static final String ID = "rowid";
         public static final String NAME = "name";
         public static final String HORARIO = "horario";
         public static final String CREATED_AT = "create_at";
         public static final String SEX = "sex";
-        public static final String FROM = "_from";
-        public static final String TO = "_to";
+        public static final String FROM = "from_";
+        public static final String TO = "to_";
     }
 }

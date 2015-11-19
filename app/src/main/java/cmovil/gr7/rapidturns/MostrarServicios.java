@@ -89,6 +89,7 @@ public class MostrarServicios extends Fragment {
         String CREATED_AT = Contract.Column.CREATED_AT;
         String FROM = Contract.Column.FROM;
         String TO = Contract.Column.TO;
+        String ID = Contract.Column.ID;
 
         DbHelper dbHelper= new DbHelper(getActivity().getActionBar().getThemedContext());//Instancia de DbHelper
         SQLiteDatabase db=dbHelper.getWritableDatabase();//Obtener instancia de BD
@@ -103,11 +104,19 @@ public class MostrarServicios extends Fragment {
                 String created_at = cursor.getString(cursor.getColumnIndex(CREATED_AT));
                 int from = cursor.getInt(cursor.getColumnIndex(FROM));
                 int to = cursor.getInt(cursor.getColumnIndex(TO));
+                int id = cursor.getPosition();
 
                 records[i][0] = name;
                 records[i][1] = hora+" "+getString(R.string.from)+" "+from+" "+getString(R.string.to)+" "+to;
                 records[i][2] = created_at;
 
+                Intent intent = new Intent(getActivity().getActionBar().getThemedContext(), Actualizar.class);
+                intent.putExtra(Contract.Column.NAME, name);
+                intent.putExtra(Contract.Column.HORARIO, hora);
+                intent.putExtra(Contract.Column.FROM, from);
+                intent.putExtra(Contract.Column.TO, to);
+                intent.putExtra(Contract.Column.ID, id);
+                getActivity().startService(intent);
                 /*messages[i] = message;
                 Log.d("MESSAGE",message);
                 created[i] = created_at;

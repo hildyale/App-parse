@@ -4,6 +4,7 @@ package cmovil.gr7.rapidturns;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -120,10 +121,6 @@ public class AgregarServicio extends Activity {
                             db.insertWithOnConflict(Contract.SERVICIO, null, values,
                                     SQLiteDatabase.CONFLICT_IGNORE);
 
-                            ParseObject testObject = new ParseObject("Servicio");
-                            testObject.put(Contract.Column.NAME, Name);
-                            testObject.saveInBackground();
-
                             System.exit(1);
                         }
                     }
@@ -131,7 +128,7 @@ public class AgregarServicio extends Activity {
 
             }
         });
-        
+
 
     }
 
