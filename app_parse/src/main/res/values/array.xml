@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="panel_options">
+        <item>@string/title_section1</item>
+        <item>@string/title_section2</item>
+        <item>@string/title_section3</item>
+        <item>@string/title_section4</item>
+
+    </string-array>
+
+    <string-array name="panel_optionsLocal">
+        <item>@string/title_section5</item>
+        <item>@string/title_section6</item>
+
+    </string-array>
+
+    <string-array name="citas">
+        <item>CHIQUITITA PLAZA PELUQUERIA INFANTIL - 15:00</item>
+        <item>AL PELO - 13:00</item>
+        <item>PELUQUERIA LA SEBASTIANA - 18:00 </item>
+    </string-array>
+
+    <string-array name="locales">
+        <item>Local</item>
+        <item>PELUQUERÍA WILLIE GUERRERO</item>
+        <item>SALON DE BELLEZA ANLLY </item>
+        <item>CHIQUITITA PLAZA PELUQUERIA INFANTIL </item>
+    </string-array>
+
+    <string-array name="favoritas">
+        <item>CHIQUITITA PLAZA PELUQUERIA INFANTIL </item>
+        <item>AL PELO</item>
+        <item>PELUQUERIA LA SEBASTIANA </item>
+    </string-array>
+
+    <string-array name="otros">
+        <item>otro12</item>
+        <item>otro112</item>
+
+    </string-array>
+
+    <string-array name="hours">
+        <item>05:00</item>
+        <item>06:00</item>
+        <item>07:00</item>
+        <item>08:00</item>
+        <item>09:00</item>
+        <item>10:00</item>
+        <item>11:00</item>
+        <item>12:00</item>
+        <item>13:00</item>
+        <item>14:00</item>
+        <item>15:00</item>
+        <item>16:00</item>
+        <item>17:00</item>
+        <item>18:00</item>
+        <item>19:00</item>
+        <item>20:00</item>
+    </string-array>
+
+</resources>

@@ -20,7 +20,7 @@ public class Contract {
         public static final String ID = "rowid";
         public static final String NAME = "name";
         public static final String HORARIO = "horario";
-        public static final String CREATED_AT = "createAt";
+        public static final String CREATED_AT = "create_at";
         public static final String SEX = "sex";
         public static final String FROM = "from_";
         public static final String TO = "to_";

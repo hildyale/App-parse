@@ -17,6 +17,15 @@ import android.widget.ListView;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +34,6 @@ public class MostrarServicios extends Fragment {
     private Object[][] records;
     private static final String ARG_SECTION_NUMBER = "section_number";
     private ListView lista;
-    private Button add;
     private int mCurrentSelectedPosition=0;
 
     public static MostrarServicios newInstance(int sectionNumber) {
@@ -47,19 +55,10 @@ public class MostrarServicios extends Fragment {
         View v = inflater.inflate(R.layout.listalocal, container, false);
         lista = (ListView) v.findViewById(R.id.ListView);
         records();
-        lista.setAdapter(new AdapterServicios(
+       /* lista.setAdapter(new AdapterServicios(
                 getActivity().getActionBar().getThemedContext(),
-                records,"#ffffff"));
+                records,"#ffffff"));*/
         lista.setItemChecked(mCurrentSelectedPosition, true);
-        add = (Button) v.findViewById(R.id.add);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent( getActivity().getActionBar().getThemedContext(),AgregarServicio.class);
-                startActivity(intent);
-            }
-        });
-
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
@@ -83,39 +82,39 @@ public class MostrarServicios extends Fragment {
 
 
     public void records() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Servicio");
+        query.whereEqualTo("local", ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> servicios, ParseException e) {
+                if (e == null) {
+                    String NAME = Contract.Column.NAME;
+                    String HORARIO = Contract.Column.HORARIO;
+                    String FROM = Contract.Column.FROM;
+                    String TO = Contract.Column.TO;
+                    int size = servicios.size();
+                    records = new Object[size][3];
+                    for (int i = 0; i < size; i++) {
+                        ParseObject servicio = servicios.get(i);
+                        String name = servicio.getString(NAME);
+                        String hora = servicio.getString(HORARIO);
+                        SimpleDateFormat ft =
+                            new SimpleDateFormat("yyyy.MM.dd");
+                        String created_at = ft.format(servicio.getCreatedAt());
+                        int from = servicio.getInt(FROM);
+                        int to = servicio.getInt(TO);
 
-        String NAME = Contract.Column.NAME;
-        String HORARIO = Contract.Column.HORARIO;
-        String CREATED_AT = Contract.Column.CREATED_AT;
-        String FROM = Contract.Column.FROM;
-        String TO = Contract.Column.TO;
-        String ID = Contract.Column.ID;
-
-        DbHelper dbHelper= new DbHelper(getActivity().getActionBar().getThemedContext());//Instancia de DbHelper
-        SQLiteDatabase db=dbHelper.getWritableDatabase();//Obtener instancia de BD
-
-        Cursor cursor = db.query(Contract.SERVICIO, null,null, null, null, null, null);
-        records = new Object[cursor.getCount()][3];
-        int i=0;
-        if (cursor.getCount() > 0) {
-            while (cursor.moveToNext()) {
-                String name = cursor.getString(cursor.getColumnIndex(NAME));
-                String hora = cursor.getString(cursor.getColumnIndex(HORARIO));
-                String created_at = cursor.getString(cursor.getColumnIndex(CREATED_AT));
-                int from = cursor.getInt(cursor.getColumnIndex(FROM));
-                int to = cursor.getInt(cursor.getColumnIndex(TO));
-                int id = cursor.getPosition();
-
-                records[i][0] = name;
-                records[i][1] = hora+" "+getString(R.string.from)+" "+from+" "+getString(R.string.to)+" "+to;
-                records[i][2] = created_at;
-
-                i++;
+                        records[i][0] = name;
+                        records[i][1] = hora + " " + getString(R.string.from) + " " + from + " " + getString(R.string.to) + " " + to;
+                        records[i][2] = created_at;
+                    }
+                    lista.setAdapter(new AdapterServicios(
+                            getActivity().getActionBar().getThemedContext(),
+                            records, "#ffffff"));
+                } else {
+                    // handle Parse Exception here
+                }
             }
-        }else{
-            Log.d("ContentProvider", "Cursor:" + cursor.getCount());
-
-        }
+        });
     }
 
 }

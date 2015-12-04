@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="android:Theme.Material">
+    </style>
+    <color name="teal">#e0f2f1</color>
+    <color name="teal2">#26a69a</color>
+    <style name="teal" parent="android:Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimary">#26a69a</item>
+        <item name="android:colorPrimaryDark">#004d40</item>
+        <item name="android:colorAccent">#4db6ac</item>
+        <item name="android:colorButtonNormal">#80cbc4</item>
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#004d40</item>
+        <item name="android:windowBackground">@color/teal</item>
+    </style>
+
+    <style name="hola">
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <color name="amber">#fff8e1</color>
+    <style name="amber" parent="android:Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimary">#ffc107</item>
+        <item name="android:colorPrimaryDark">#ff6f00</item>
+        <item name="android:colorAccent">#ffe082</item>
+        <item name="android:colorButtonNormal">#ffe082</item>
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#004d40</item>
+        <item name="android:windowBackground">@color/amber</item>
+    </style>
+
+    <color name="cyan">#e0f7fa</color>
+    <style name="cyan" parent="android:Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimary">#26c6da</item>
+        <item name="android:colorPrimaryDark">#006064</item>
+        <item name="android:colorAccent">#80deea</item>
+        <item name="android:colorButtonNormal">#80deea</item>
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#006064</item>
+        <item name="android:windowBackground">@color/cyan</item>
+    </style>
+
+</resources>
