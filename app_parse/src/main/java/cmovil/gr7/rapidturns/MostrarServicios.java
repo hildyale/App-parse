@@ -108,7 +108,7 @@ public class MostrarServicios extends Fragment {
                         records[i][2] = created_at;
                     }
                     lista.setAdapter(new AdapterServicios(
-                            getActivity().getActionBar().getThemedContext(),
+                            getActivity().getApplicationContext(),
                             records, "#ffffff"));
                 } else {
                     // handle Parse Exception here

@@ -165,7 +165,7 @@ public class AgregarEmpleado extends Activity {
     }
 
     public void Error (int a){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActionBar().getThemedContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
         builder.setMessage(a)
                 .setTitle(R.string.dialog_title);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

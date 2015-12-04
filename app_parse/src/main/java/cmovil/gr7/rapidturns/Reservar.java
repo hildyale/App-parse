@@ -63,44 +63,60 @@ public class Reservar extends Activity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String id = getIntent().getExtras().getString("id");
-                String local = getIntent().getExtras().getString("local");
-                    ParseQuery<ParseUser> query = ParseUser.getQuery();
-                    query.getInBackground(local, new GetCallback<ParseUser>() {
-                        public void done(ParseUser object, ParseException e) {
-                            if (e == null) {
-                                final ProgressDialog dialog = new ProgressDialog(Reservar.this);
-                                dialog.setMessage("Posting...");
-                                dialog.show();
-
-                                ParseObject values = new ParseObject("Cita");
-                                values.put(Contract.Column.HORARIO, time);
-                                values.put("user", ParseUser.getCurrentUser());
-                                values.put("quien",id);
-                                values.put("local",object);
-
-                                ParseACL acl = new ParseACL();
-                                acl.setPublicReadAccess(true);
-                                values.setACL(acl);
-
-                                values.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        dialog.dismiss();
-                                        finish();
-                                    }
-                                });
-                            } else {
-                                // something went wrong
-                            }
-                        }
-                    });
+                 user();
                 }
 
         });
     }
-    public void actualizar(ParseUser a){
-        user = a;
+
+    public void user(){
+        String id = getIntent().getExtras().getString("id");
+        String type = getIntent().getExtras().getString("type");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(type);
+        query.getInBackground(id, new GetCallback<ParseObject>() {
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                    records(object);
+                } else {
+                    // something went wrong
+                }
+            }
+        });
+    }
+
+    public void records(final ParseObject quien){
+        final String type = getIntent().getExtras().getString("type");
+        String local = getIntent().getExtras().getString("local");
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.getInBackground(local, new GetCallback<ParseUser>() {
+            public void done(ParseUser object, ParseException e) {
+                if (e == null) {
+                    final ProgressDialog dialog = new ProgressDialog(Reservar.this);
+                    dialog.setMessage("Posting...");
+                    dialog.show();
+
+                    ParseObject values = new ParseObject("Cita");
+                    values.put(Contract.Column.HORARIO, time);
+                    values.put("user", ParseUser.getCurrentUser());
+                    values.put(type,quien);
+                    values.put("local",object);
+
+                    ParseACL acl = new ParseACL();
+                    acl.setPublicReadAccess(true);
+                    values.setACL(acl);
+
+                    values.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+                } else {
+                    // something went wrong
+                }
+            }
+        });
     }
 
     }

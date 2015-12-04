@@ -115,7 +115,7 @@ public class MostrarEmpleados extends Fragment {
                         records[i][3] = sex;
                     }
                     lista.setAdapter(new AdapterEmpleados(
-                            getActivity().getActionBar().getThemedContext(),
+                            getActivity().getApplicationContext(),
                             records, "#ffffff"));
                 } else {
                     // handle Parse Exception here

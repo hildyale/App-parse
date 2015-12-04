@@ -37,7 +37,7 @@ public class MostrarOtros extends Fragment {
                              Bundle savedInstanceState) {
         lista = (ListView) inflater.inflate(R.layout.lista, container, false);
         lista.setAdapter(new ArrayAdapter<String>(
-                getActivity().getActionBar().getThemedContext(),
+                getActivity().getApplicationContext(),
                 R.layout.item_locales,
                 R.id.name,
                 getResources().getStringArray(R.array.otros)));

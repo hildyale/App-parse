@@ -66,7 +66,7 @@ public class MostrarLocales extends Fragment {
                 Object[] o = (Object[]) lista.getItemAtPosition(position);
                 String Id = (String) o[1];
                 String name = (String) o[0];
-                Intent intent = new Intent(getActivity().getActionBar().getThemedContext(), VerLocal.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), VerLocal.class);
                 intent.putExtra("name", name);
                 intent.putExtra("Id", Id);
                 startActivity(intent);
@@ -83,7 +83,7 @@ public class MostrarLocales extends Fragment {
                 query.getInBackground(Id, new GetCallback<ParseUser>() {
                     public void done(ParseUser object, ParseException e) {
                         if (e == null) {
-                            final ProgressDialog dialog = new ProgressDialog(getActivity().getActionBar().getThemedContext());
+                            final ProgressDialog dialog = new ProgressDialog(getActivity().getApplicationContext());
                             dialog.setMessage("Adding...");
                             dialog.show();
 
@@ -136,7 +136,7 @@ public class MostrarLocales extends Fragment {
                         records[i][1] = id;
                     }
                     lista.setAdapter(new AdapterLocales(
-                            getActivity().getActionBar().getThemedContext(),
+                            getActivity().getApplicationContext(),
                             records,"#000000"));
                 } else {
                     // handle Parse Exception here

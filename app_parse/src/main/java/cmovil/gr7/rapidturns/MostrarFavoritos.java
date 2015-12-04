@@ -58,7 +58,7 @@ public class MostrarFavoritos extends Fragment {
                 Object[] o = (Object[]) lista.getItemAtPosition(position);
                 String Id = (String) o[1];
                 String name = (String) o[0];
-                Intent intent = new Intent(getActivity().getActionBar().getThemedContext(), VerLocal.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), VerLocal.class);
                 intent.putExtra("name", name);
                 intent.putExtra("Id", Id);
                 startActivity(intent);
@@ -95,7 +95,7 @@ public class MostrarFavoritos extends Fragment {
                         records[i][1] = id;
                     }
                     lista.setAdapter(new AdapterLocales(
-                            getActivity().getActionBar().getThemedContext(),
+                            getActivity().getApplicationContext(),
                             records, "#000000"));
                 } else {
                     // handle Parse Exception here

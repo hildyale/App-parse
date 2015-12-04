@@ -67,10 +67,11 @@ public class MostrarEmpleadosCliente extends Fragment {
 
                 Object[] o = (Object[])lista.getItemAtPosition(position);
                 String str = (String) o[0];//As you are using Default String Adapter
-                Intent intent = new Intent(getActivity().getActionBar().getThemedContext(), Reservar.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), Reservar.class);
                 intent.putExtra("nombre",getString(R.string.reservarServicio)+" "+str);
                 intent.putExtra("id",o[4]+"");
                 intent.putExtra("local",o[5]+"");
+                intent.putExtra("type","Empleado");
                 startActivity(intent);
             }
         });
@@ -125,7 +126,7 @@ public class MostrarEmpleadosCliente extends Fragment {
                         records[i][5] = Id;
                     }
                     lista.setAdapter(new AdapterEmpleados(
-                            getActivity().getActionBar().getThemedContext(),
+                            getActivity().getApplicationContext(),
                             records, "#ffffff"));
                 } else {
                     // handle Parse Exception here
