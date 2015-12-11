@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -70,7 +71,7 @@ public class MostrarCitas extends Fragment {
 
     public void records() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Cita");
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.fromLocalDatastore();
         query.include("local");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> citas, ParseException e) {
@@ -80,15 +81,15 @@ public class MostrarCitas extends Fragment {
                     records = new Object[size][2];
                     for (int i = 0; i < size; i++) {
                         ParseObject cita = citas.get(i);
-                        ParseUser local = (ParseUser)cita.get("local");
+                        ParseUser local = (ParseUser) cita.get("local");
                         String name = local.getString("name");
                         int id = cita.getInt("horario");
                         records[i][0] = name;
                         records[i][1] = id;
                     }
                     lista.setAdapter(new AdapterCitas(
-                            getActivity().getActionBar().getThemedContext(),
-                            records,"#000000"));
+                            getActivity().getApplicationContext(),
+                            records, "#000000"));
                 } else {
                     // handle Parse Exception here
                 }
@@ -96,5 +97,17 @@ public class MostrarCitas extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        records();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((ClientActivity) activity).onSectionAttached(
+                getArguments().getInt(ARG_SECTION_NUMBER));
+    }
 
 }

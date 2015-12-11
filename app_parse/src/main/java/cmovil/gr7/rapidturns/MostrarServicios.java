@@ -84,6 +84,7 @@ public class MostrarServicios extends Fragment {
     public void records() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Servicio");
         query.whereEqualTo("local", ParseUser.getCurrentUser());
+        query.fromLocalDatastore();
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> servicios, ParseException e) {
                 if (e == null) {

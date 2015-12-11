@@ -68,5 +68,7 @@
     <string name="type">Tipo de Usuario</string>
     <string name="correct_register">Registrado Satisfactoriamente</string>
     <string name="incorrect_register">Error al Registrarse</string>
-
+    <string name="nosynced">No hay internet fallo la sincronisacion de algunos archivos</string>
+    <string name="nonet">No hay internet</string>
+    <string name="update">Datos Actualizados</string>
 </resources>

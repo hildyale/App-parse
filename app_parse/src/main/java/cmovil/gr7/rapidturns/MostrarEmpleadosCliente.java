@@ -83,6 +83,7 @@ public class MostrarEmpleadosCliente extends Fragment {
     public void user(){
         String Id = getArguments().getString("Id");
         ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.fromLocalDatastore();
         query.getInBackground(Id, new GetCallback<ParseUser>() {
             public void done(ParseUser object, ParseException e) {
                 if (e == null) {
@@ -96,6 +97,7 @@ public class MostrarEmpleadosCliente extends Fragment {
     public void records(ParseUser user) {
         final String Id = getArguments().getString("Id");
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Empleado");
+        query.fromLocalDatastore();
         query.whereEqualTo("local", user);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> empleados, ParseException e) {

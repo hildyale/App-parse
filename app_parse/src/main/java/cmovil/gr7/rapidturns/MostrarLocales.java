@@ -121,6 +121,7 @@ public class MostrarLocales extends Fragment {
 
     public void records() {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.fromLocalDatastore();
         query.whereEqualTo("type", "local");
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> locales, ParseException e) {
@@ -136,7 +137,7 @@ public class MostrarLocales extends Fragment {
                         records[i][1] = id;
                     }
                     lista.setAdapter(new AdapterLocales(
-                            getActivity().getApplicationContext(),
+                            getActivity().getBaseContext(),
                             records,"#000000"));
                 } else {
                     // handle Parse Exception here

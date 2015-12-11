@@ -1,8 +1,12 @@
 package cmovil.gr7.rapidturns;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
@@ -44,7 +48,10 @@ public class Register extends Activity {
                 if (usernametxt.equals("") || passwordtxt.equals("") || emailtxt.equals("") || nametxt.equals("")) {
                     Error(R.string.error_field_required);
                 } else {
-                    ParseUser user = new ParseUser();
+                    final ProgressDialog dialog = new ProgressDialog(Register.this);
+                    dialog.setMessage("Posting...");
+                    dialog.show();
+                    final ParseUser user = new ParseUser();
                     user.setUsername(usernametxt);
                     user.setPassword(passwordtxt);
                     user.setEmail(emailtxt);
@@ -54,26 +61,42 @@ public class Register extends Activity {
                         user.put("type","local");
                     }
                     user.put("name",nametxt);
+                    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo ni = cm.getActiveNetworkInfo();
+                    if ((ni != null) && (ni.isConnected())) {
                     user.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
                                 Toast.makeText(getApplicationContext(), "Successfully Signed up!", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(Register.this, Login.class));
+                                dialog.dismiss();
+                                if(user.getString("type").equals("cliente")){
+                                    startActivity(new Intent(Register.this, ClientActivity.class));
+                                }else{
+                                    startActivity(new Intent(Register.this, LocalActivity.class));
+                                }
+                                finish();
                             } else {
-
-                                Toast.makeText(getApplicationContext(), "Signed up error", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Signed up error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
                             }
 
                         }
                     });
+                    }else{
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "No Internet",
+                                Toast.LENGTH_LONG).show();
+                                dialog.dismiss();
+                    }
                 }
             }
         });
     }
 
     public void Error (int a){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
         builder.setMessage(a)
                 .setTitle(R.string.dialog_title);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

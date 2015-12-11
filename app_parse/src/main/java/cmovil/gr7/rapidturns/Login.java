@@ -1,13 +1,18 @@
 package cmovil.gr7.rapidturns;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.app.AlertDialog;
+import android.widget.Toast;
+
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -48,21 +53,30 @@ public class Login extends Activity  {
                 if (usernametxt.equals("") || passwordtxt.equals("")) {
                     Error(R.string.error_field_required);
                 }else{
-                    ParseUser.logInInBackground(usernametxt, passwordtxt, new LogInCallback() {
-                        @Override
-                        public void done(ParseUser user, ParseException e) {
-                            if (user != null) {
-                                if(user.getString("type").equals("cliente")){
-                                    startActivity(new Intent(Login.this, ClientActivity.class));
-                                }else{
-                                    startActivity(new Intent(Login.this, LocalActivity.class));
+                    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo ni = cm.getActiveNetworkInfo();
+                    if ((ni != null) && (ni.isConnected())) {
+                        ParseUser.logInInBackground(usernametxt, passwordtxt, new LogInCallback() {
+                            @Override
+                            public void done(ParseUser user, ParseException e) {
+                                if (user != null) {
+                                    if(user.getString("type").equals("cliente")){
+                                        startActivity(new Intent(Login.this, ClientActivity.class));
+                                    }else{
+                                        startActivity(new Intent(Login.this, LocalActivity.class));
+                                    }
+                                    finish();
+                                } else {
+                                    Error(R.string.nouser);
                                 }
-                                finish();
-                            } else {
-                                Error(R.string.nouser);
                             }
-                        }
-                    });
+                        });
+                    }else{
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "No Internet",
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -70,7 +84,7 @@ public class Login extends Activity  {
     }
 
         public void Error (int a){
-            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
             builder.setMessage(a)
                     .setTitle(R.string.dialog_title);
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

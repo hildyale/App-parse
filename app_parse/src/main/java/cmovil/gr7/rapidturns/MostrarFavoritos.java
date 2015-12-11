@@ -78,7 +78,7 @@ public class MostrarFavoritos extends Fragment {
 
     public void records() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Favorites");
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.fromLocalDatastore();
         query.include("local");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> favorites, ParseException e) {

@@ -32,15 +32,13 @@
         </activity>
         <activity
             android:name=".DispatchActivity"
-            android:label="@string/app_name"
-            >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".AgregarEmpleado"
             android:label="@string/title_activity_empleado"
@@ -66,9 +64,13 @@
         <activity
             android:name=".Register"
             android:label="@string/title_activity_register"
-            android:theme="@style/cyan"
-            >
+            android:theme="@style/cyan" >
         </activity>
+
+        <service
+            android:name=".ActualizarService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

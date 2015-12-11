@@ -87,6 +87,7 @@ public class MostrarEmpleados extends Fragment {
 
     public void records() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Empleado");
+        query.fromLocalDatastore();
         query.whereEqualTo("local", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> empleados, ParseException e) {

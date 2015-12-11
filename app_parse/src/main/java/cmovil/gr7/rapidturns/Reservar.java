@@ -3,8 +3,12 @@ package cmovil.gr7.rapidturns;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.Parse;
@@ -88,6 +93,7 @@ public class Reservar extends Activity {
         final String type = getIntent().getExtras().getString("type");
         String local = getIntent().getExtras().getString("local");
         ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.fromLocalDatastore();
         query.getInBackground(local, new GetCallback<ParseUser>() {
             public void done(ParseUser object, ParseException e) {
                 if (e == null) {
@@ -105,13 +111,23 @@ public class Reservar extends Activity {
                     acl.setPublicReadAccess(true);
                     values.setACL(acl);
 
-                    values.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    });
+                    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo ni = cm.getActiveNetworkInfo();
+                    if ((ni != null) && (ni.isConnected())) {
+                        values.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    dialog.dismiss();
+                                    finish();
+                                } else {
+                                    Log.d("error1 : ", e.getMessage());
+                                }
+                            }
+                        });
+                    }else{
+                        Toast.makeText(getApplicationContext(), "NO INTERNET" , Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     // something went wrong
                 }

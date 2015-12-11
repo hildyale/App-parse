@@ -3,11 +3,11 @@
 
     <item android:id="@+id/addemployed" android:title="@string/add"
         android:orderInCategory="100" android:showAsAction="always"
-        android:icon="@drawable/addemployed"/>
+        android:icon="@drawable/ic_person_add_white_18dp"/>
 
     <item android:id="@+id/addservice" android:title="@string/add"
         android:orderInCategory="100" android:showAsAction="always"
-        android:icon="@drawable/addservice"/>
+        android:icon="@drawable/ic_add_circle_white_18dp"/>
 
     <item android:id="@+id/action_example" android:title="@string/action_example"
         android:showAsAction="never" />

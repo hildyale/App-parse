@@ -59,5 +59,7 @@
     <string name="type">Users Type</string>
     <string name="correct_register">Successfully Signed up!</string>
     <string name="incorrect_register">Signed up error</string>
-
+    <string name="nosynced">Your device appears to be offline. Some files may not have been synced."</string>
+    <string name="nonet">No Internet</string>
+    <string name="update">Update Data</string>
 </resources>
