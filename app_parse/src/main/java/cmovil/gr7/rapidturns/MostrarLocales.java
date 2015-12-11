@@ -3,6 +3,7 @@ package cmovil.gr7.rapidturns;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -35,6 +36,8 @@ public class MostrarLocales extends Fragment {
     private ListView lista;
     private int mCurrentSelectedPosition=0;
     private Object[][] records;
+    private Context mContext;
+
 
     public static MostrarLocales newInstance(int sectionNumber) {
         MostrarLocales fragment = new MostrarLocales();
@@ -53,6 +56,7 @@ public class MostrarLocales extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         lista = (ListView) inflater.inflate(R.layout.lista, container, false);
+        mContext=getActivity().getApplicationContext();
         records();
         /*lista.setAdapter(new ArrayAdapter<String>(
                 getActivity().getActionBar().getThemedContext(),
@@ -83,7 +87,7 @@ public class MostrarLocales extends Fragment {
                 query.getInBackground(Id, new GetCallback<ParseUser>() {
                     public void done(ParseUser object, ParseException e) {
                         if (e == null) {
-                            final ProgressDialog dialog = new ProgressDialog(getActivity().getApplicationContext());
+                            final ProgressDialog dialog = new ProgressDialog(mContext);
                             dialog.setMessage("Adding...");
                             dialog.show();
 
@@ -137,7 +141,7 @@ public class MostrarLocales extends Fragment {
                         records[i][1] = id;
                     }
                     lista.setAdapter(new AdapterLocales(
-                            getActivity().getBaseContext(),
+                            mContext,
                             records,"#000000"));
                 } else {
                     // handle Parse Exception here

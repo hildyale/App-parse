@@ -3,6 +3,7 @@ package cmovil.gr7.rapidturns;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -38,6 +39,8 @@ public class MostrarEmpleados extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private ListView lista;
     private int mCurrentSelectedPosition=0;
+    private Context mContext;
+
 
     public static MostrarEmpleados newInstance(int sectionNumber) {
         MostrarEmpleados fragment = new MostrarEmpleados();
@@ -57,6 +60,8 @@ public class MostrarEmpleados extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.listalocal, container, false);
         lista = (ListView) v.findViewById(R.id.ListView);
+        mContext=getActivity().getApplicationContext();
+
         records();
         /*if(records!=null) {
             lista.setAdapter(new AdapterEmpleados(
@@ -116,7 +121,7 @@ public class MostrarEmpleados extends Fragment {
                         records[i][3] = sex;
                     }
                     lista.setAdapter(new AdapterEmpleados(
-                            getActivity().getApplicationContext(),
+                            mContext,
                             records, "#ffffff"));
                 } else {
                     // handle Parse Exception here

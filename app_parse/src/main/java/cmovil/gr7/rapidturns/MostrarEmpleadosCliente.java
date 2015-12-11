@@ -3,6 +3,7 @@ package cmovil.gr7.rapidturns;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -37,6 +38,8 @@ public class MostrarEmpleadosCliente extends Fragment {
     private ListView lista;
     private Button add;
     private int mCurrentSelectedPosition=0;
+    private Context mContext;
+
 
     public static MostrarEmpleadosCliente newInstance(String id) {
         MostrarEmpleadosCliente fragment = new MostrarEmpleadosCliente();
@@ -56,6 +59,7 @@ public class MostrarEmpleadosCliente extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.listacliente, container, false);
         lista = (ListView) v.findViewById(R.id.ListView);
+        mContext=getActivity().getApplicationContext();
         user();
         /*lista.setAdapter(new AdapterEmpleados(
                 getActivity().getActionBar().getThemedContext(),
@@ -128,7 +132,7 @@ public class MostrarEmpleadosCliente extends Fragment {
                         records[i][5] = Id;
                     }
                     lista.setAdapter(new AdapterEmpleados(
-                            getActivity().getApplicationContext(),
+                            mContext,
                             records, "#ffffff"));
                 } else {
                     // handle Parse Exception here

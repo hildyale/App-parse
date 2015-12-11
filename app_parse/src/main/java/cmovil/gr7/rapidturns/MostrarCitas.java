@@ -2,6 +2,7 @@ package cmovil.gr7.rapidturns;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -33,6 +34,8 @@ public class MostrarCitas extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private ListView lista;
     private int mCurrentSelectedPosition=0;
+    private Context mContext;
+
 
     public static MostrarCitas newInstance(int sectionNumber) {
         MostrarCitas fragment = new MostrarCitas();
@@ -51,6 +54,7 @@ public class MostrarCitas extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.listacliente, container, false);
+        mContext=getActivity().getApplicationContext();
         lista = (ListView) v.findViewById(R.id.ListView);
         records();
         /*lista.setAdapter(new AdapterCitas(
@@ -88,7 +92,7 @@ public class MostrarCitas extends Fragment {
                         records[i][1] = id;
                     }
                     lista.setAdapter(new AdapterCitas(
-                            getActivity().getApplicationContext(),
+                            mContext,
                             records, "#000000"));
                 } else {
                     // handle Parse Exception here
