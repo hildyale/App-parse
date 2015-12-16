@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -35,6 +36,7 @@ public class MostrarCitas extends Fragment {
     private ListView lista;
     private int mCurrentSelectedPosition=0;
     private Context mContext;
+    private boolean dataexists=false;
 
 
     public static MostrarCitas newInstance(int sectionNumber) {
@@ -53,24 +55,51 @@ public class MostrarCitas extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.listacliente, container, false);
-        mContext=getActivity().getApplicationContext();
-        lista = (ListView) v.findViewById(R.id.ListView);
-        records();
+        dataexists();
+        View v;
+        if(dataexists) {
+            v = inflater.inflate(R.layout.listacliente, container, false);
+            mContext = getActivity().getApplicationContext();
+            lista = (ListView) v.findViewById(R.id.ListView);
+            records();
         /*lista.setAdapter(new AdapterCitas(
                 getActivity().getActionBar().getThemedContext(),
                 records,"#000000"));*/
-        lista.setItemChecked(mCurrentSelectedPosition, true);
-        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+            lista.setItemChecked(mCurrentSelectedPosition, true);
+            lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
 
 
-            }
-        });
-
+                }
+            });
+        }else{
+            v = inflater.inflate(R.layout.vacio,container,false);
+            mContext = getActivity().getApplicationContext();
+            TextView text = (TextView) v.findViewById(R.id.text);
+            String Text = text.getText()+"";
+            text.setText(Text+getResources().getString(R.string.title_section1));
+        }
 
         return v;
+    }
+
+    public void dataExistsTrue(){
+        dataexists = true;
+    }
+
+    public void dataexists(){
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Cita");
+        query.fromLocalDatastore();
+        try {
+            List<ParseObject> citas = query.find();
+            if (citas.size() != 0){
+                dataExistsTrue();
+            }
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
     }
 
     public void records() {

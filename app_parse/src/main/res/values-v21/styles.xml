@@ -3,7 +3,8 @@
     <style name="AppTheme" parent="android:Theme.Material">
     </style>
     <color name="teal">#e0f2f1</color>
-    <color name="teal2">#26a69a</color>
+    <color name="teal2">#b2dfdb</color>
+    <color name="teal3">#26a69a</color>
     <style name="teal" parent="android:Theme.Material.Light.DarkActionBar">
         <item name="android:colorPrimary">#26a69a</item>
         <item name="android:colorPrimaryDark">#004d40</item>

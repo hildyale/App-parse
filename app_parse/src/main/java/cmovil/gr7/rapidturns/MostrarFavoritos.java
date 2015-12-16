@@ -2,6 +2,7 @@ package cmovil.gr7.rapidturns;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -33,6 +34,7 @@ public class MostrarFavoritos extends Fragment {
     private int mCurrentSelectedPosition=0;
     private ListView lista;
     private Object[][] records;
+    private Context mcontext;
 
     public static MostrarFavoritos newInstance(int sectionNumber) {
         MostrarFavoritos fragment = new MostrarFavoritos();
@@ -107,6 +109,7 @@ public class MostrarFavoritos extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         lista = (ListView) inflater.inflate(R.layout.lista, container, false);
+        mcontext = getActivity().getApplicationContext();
         records();
         /*lista.setAdapter(new ArrayAdapter<String>(
                 getActivity().getActionBar().getThemedContext(),
@@ -158,7 +161,7 @@ public class MostrarFavoritos extends Fragment {
                         records[i][1] = id;
                     }
                     lista.setAdapter(new AdapterLocales(
-                            getActivity().getApplicationContext(),
+                            mcontext,
                             records, "#000000"));
                 } else {
                     // handle Parse Exception here

@@ -40,9 +40,9 @@ public class VerLocal extends Activity {
         final String Id =  getIntent().getExtras().getString("Id");
         getActionBar().setTitle(name);
         final FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, MostrarEmpleadosCliente.newInstance(Id))
-                .commit();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, MostrarEmpleadosCliente.newInstance(Id))
+                    .commit();
 
         empleados = (Button) findViewById(R.id.empleados);
         empleados.setBackgroundColor(getResources().getColor(R.color.teal));
@@ -50,7 +50,7 @@ public class VerLocal extends Activity {
             @Override
             public void onClick(View v) {
                 empleados.setBackgroundColor(getResources().getColor(R.color.teal));
-                servicios.setBackgroundColor(getResources().getColor(R.color.teal2));
+                servicios.setBackgroundColor(getResources().getColor(R.color.teal3));
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, MostrarEmpleadosCliente.newInstance(Id))
                         .commit();
@@ -62,7 +62,7 @@ public class VerLocal extends Activity {
             @Override
             public void onClick(View v) {
                 servicios.setBackgroundColor(getResources().getColor(R.color.teal));
-                empleados.setBackgroundColor(getResources().getColor(R.color.teal2));
+                empleados.setBackgroundColor(getResources().getColor(R.color.teal3));
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, MostrarServiciosCliente.newInstance(Id))
                         .commit();

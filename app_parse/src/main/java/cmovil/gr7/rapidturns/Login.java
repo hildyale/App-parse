@@ -1,6 +1,7 @@
 package cmovil.gr7.rapidturns;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -56,6 +57,9 @@ public class Login extends Activity  {
                     ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                     NetworkInfo ni = cm.getActiveNetworkInfo();
                     if ((ni != null) && (ni.isConnected())) {
+                        final ProgressDialog dialog = new ProgressDialog(Login.this);
+                        dialog.setMessage("Posting...");
+                        dialog.show();
                         ParseUser.logInInBackground(usernametxt, passwordtxt, new LogInCallback() {
                             @Override
                             public void done(ParseUser user, ParseException e) {
@@ -69,6 +73,7 @@ public class Login extends Activity  {
                                 } else {
                                     Error(R.string.nouser);
                                 }
+                                dialog.dismiss();
                             }
                         });
                     }else{

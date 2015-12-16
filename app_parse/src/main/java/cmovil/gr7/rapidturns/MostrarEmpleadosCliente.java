@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -39,14 +40,16 @@ public class MostrarEmpleadosCliente extends Fragment {
     private Button add;
     private int mCurrentSelectedPosition=0;
     private Context mContext;
+    private boolean dataexists=false;
+    private ParseUser user;
 
 
     public static MostrarEmpleadosCliente newInstance(String id) {
-        MostrarEmpleadosCliente fragment = new MostrarEmpleadosCliente();
-        Bundle args = new Bundle();
-        args.putString("Id", id);
-        fragment.setArguments(args);
-        return fragment;
+            MostrarEmpleadosCliente fragment = new MostrarEmpleadosCliente();
+            Bundle args = new Bundle();
+            args.putString("Id", id);
+            fragment.setArguments(args);
+            return fragment;
     }
 
     public MostrarEmpleadosCliente() {
@@ -57,31 +60,62 @@ public class MostrarEmpleadosCliente extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.listacliente, container, false);
-        lista = (ListView) v.findViewById(R.id.ListView);
-        mContext=getActivity().getApplicationContext();
         user();
+        dataexists();
+        View v;
+        mContext = getActivity().getApplicationContext();
+        if(dataexists) {
+            v = inflater.inflate(R.layout.listacliente, container, false);
+            lista = (ListView) v.findViewById(R.id.ListView);
+            records();
         /*lista.setAdapter(new AdapterEmpleados(
                 getActivity().getActionBar().getThemedContext(),
                 records,"#000000"));*/
-        lista.setItemChecked(mCurrentSelectedPosition, true);
-        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+            lista.setItemChecked(mCurrentSelectedPosition, true);
+            lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
 
-                Object[] o = (Object[])lista.getItemAtPosition(position);
-                String str = (String) o[0];//As you are using Default String Adapter
-                Intent intent = new Intent(getActivity().getApplicationContext(), Reservar.class);
-                intent.putExtra("nombre",getString(R.string.reservarServicio)+" "+str);
-                intent.putExtra("id",o[4]+"");
-                intent.putExtra("local",o[5]+"");
-                intent.putExtra("type","Empleado");
-                startActivity(intent);
+                    Object[] o = (Object[]) lista.getItemAtPosition(position);
+                    String str = (String) o[0];//As you are using Default String Adapter
+                    Intent intent = new Intent(getActivity().getApplicationContext(), Reservar.class);
+                    intent.putExtra("nombre", getString(R.string.reservarServicio) + " " + str);
+                    intent.putExtra("id", o[4] + "");
+                    intent.putExtra("local", o[5] + "");
+                    intent.putExtra("type", "Empleado");
+                    startActivity(intent);
+                }
+            });
+        }else{
+            v = inflater.inflate(R.layout.vacio,container,false);
+            TextView text = (TextView) v.findViewById(R.id.text);
+            String Text = text.getText()+"";
+            text.setText(Text+getResources().getString(R.string.title_section5));
+        }
+        return v;
+    }
+
+    public void dataExistsTrue(){
+        dataexists = true;
+    }
+
+    public void dataexists(){
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Empleado");
+        query.fromLocalDatastore();
+        query.whereEqualTo("local", user);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> empleados, ParseException e) {
+                if (e == null) {
+                    if (empleados.size() != 0){
+                        dataExistsTrue();
+                    }
+                }
             }
         });
+    }
 
-
-        return v;
+    public void setUser(ParseUser a){
+        user = a;
     }
 
     public void user(){
@@ -91,54 +125,57 @@ public class MostrarEmpleadosCliente extends Fragment {
         query.getInBackground(Id, new GetCallback<ParseUser>() {
             public void done(ParseUser object, ParseException e) {
                 if (e == null) {
-                    records(object);
+                    setUser(object);
                 } else {
                     // something went wrong
                 }
             }
         });
     }
-    public void records(ParseUser user) {
+
+    public void records() {
         final String Id = getArguments().getString("Id");
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Empleado");
         query.fromLocalDatastore();
         query.whereEqualTo("local", user);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> empleados, ParseException e) {
-                if (e == null) {
-                    String NAME = Contract.Column.NAME;
-                    String HORARIO = Contract.Column.HORARIO;
-                    String SEX = Contract.Column.SEX;
-                    String FROM = Contract.Column.FROM;
-                    String TO = Contract.Column.TO;
-                    int size = empleados.size();
-                    records = new Object[size][6];
-                    for (int i = 0; i < size; i++) {
-                        ParseObject empleado = empleados.get(i);
-                        String name = empleado.getString(NAME);
-                        String hora = empleado.getString(HORARIO);
-                        SimpleDateFormat ft =
-                                new SimpleDateFormat("yyyy.MM.dd");
-                        String created_at = ft.format(empleado.getCreatedAt());
-                        String sex = empleado.getString(SEX);
-                        String id = empleado.getObjectId();
-                        int from = empleado.getInt(FROM);
-                        int to = empleado.getInt(TO);
-                        records[i][0] = name;
-                        records[i][1] = hora + " " + getString(R.string.from) + " " + from + " " + getString(R.string.to) + " " + to;
-                        records[i][2] = created_at;
-                        records[i][3] = sex;
-                        records[i][4] = id;
-                        records[i][5] = Id;
+        if (isAdded()) {
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> empleados, ParseException e) {
+                    if (e == null) {
+                        String NAME = Contract.Column.NAME;
+                        String HORARIO = Contract.Column.HORARIO;
+                        String SEX = Contract.Column.SEX;
+                        String FROM = Contract.Column.FROM;
+                        String TO = Contract.Column.TO;
+                        int size = empleados.size();
+                        records = new Object[size][6];
+                        for (int i = 0; i < size; i++) {
+                            ParseObject empleado = empleados.get(i);
+                            String name = empleado.getString(NAME);
+                            String hora = empleado.getString(HORARIO);
+                            SimpleDateFormat ft =
+                                    new SimpleDateFormat("yyyy.MM.dd");
+                            String created_at = ft.format(empleado.getCreatedAt());
+                            String sex = empleado.getString(SEX);
+                            String id = empleado.getObjectId();
+                            int from = empleado.getInt(FROM);
+                            int to = empleado.getInt(TO);
+                            records[i][0] = name;
+                            records[i][1] = hora + " " + getString(R.string.from) + " " + from + " " + getString(R.string.to) + " " + to;
+                            records[i][2] = created_at;
+                            records[i][3] = sex;
+                            records[i][4] = id;
+                            records[i][5] = Id;
+                        }
+                        lista.setAdapter(new AdapterEmpleados(
+                                mContext,
+                                records, "#000000"));
+                    } else {
+                        // handle Parse Exception here
                     }
-                    lista.setAdapter(new AdapterEmpleados(
-                            mContext,
-                            records, "#000000"));
-                } else {
-                    // handle Parse Exception here
                 }
-            }
-        });
-                }
+            });
+        }
+    }
 
-            }
+}

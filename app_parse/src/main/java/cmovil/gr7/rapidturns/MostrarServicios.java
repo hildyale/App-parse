@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -37,6 +38,7 @@ public class MostrarServicios extends Fragment {
     private ListView lista;
     private int mCurrentSelectedPosition=0;
     private Context mContext;
+    private boolean dataexists=false;
 
 
     public static MostrarServicios newInstance(int sectionNumber) {
@@ -55,29 +57,55 @@ public class MostrarServicios extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.listalocal, container, false);
-        lista = (ListView) v.findViewById(R.id.ListView);
-        mContext=getActivity().getApplicationContext();
+        dataexists();
+        View v;
+        if(dataexists) {
+            v = inflater.inflate(R.layout.listalocal, container, false);
+            lista = (ListView) v.findViewById(R.id.ListView);
+            mContext = getActivity().getApplicationContext();
 
-        records();
+            records();
        /* lista.setAdapter(new AdapterServicios(
                 getActivity().getActionBar().getThemedContext(),
                 records,"#ffffff"));*/
-        lista.setItemChecked(mCurrentSelectedPosition, true);
-        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+            lista.setItemChecked(mCurrentSelectedPosition, true);
+            lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
 
-                Object[] o = (Object[]) lista.getItemAtPosition(position);
-                String str = (String) o[0];//As you are using Default String Adapter
-                Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
-            }
-        });
-
+                    Object[] o = (Object[]) lista.getItemAtPosition(position);
+                    String str = (String) o[0];//As you are using Default String Adapter
+                    Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            v = inflater.inflate(R.layout.vacio,container,false);
+            TextView text = (TextView) v.findViewById(R.id.text);
+            String Text = text.getText()+"";
+            text.setText(Text+getResources().getString(R.string.title_section6));
+        }
 
         return v;
     }
 
+    public void dataExistsTrue(){
+        dataexists = true;
+    }
+
+    public void dataexists(){
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Servicio");
+        query.whereEqualTo("local", ParseUser.getCurrentUser());
+        query.fromLocalDatastore();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> servicios, ParseException e) {
+                if (e == null) {
+                    if (servicios.size() != 0){
+                        dataExistsTrue();
+                    }
+                }
+            }
+        });
+    }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -90,37 +118,40 @@ public class MostrarServicios extends Fragment {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Servicio");
         query.whereEqualTo("local", ParseUser.getCurrentUser());
         query.fromLocalDatastore();
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> servicios, ParseException e) {
-                if (e == null) {
-                    String NAME = Contract.Column.NAME;
-                    String HORARIO = Contract.Column.HORARIO;
-                    String FROM = Contract.Column.FROM;
-                    String TO = Contract.Column.TO;
-                    int size = servicios.size();
-                    records = new Object[size][3];
-                    for (int i = 0; i < size; i++) {
-                        ParseObject servicio = servicios.get(i);
-                        String name = servicio.getString(NAME);
-                        String hora = servicio.getString(HORARIO);
-                        SimpleDateFormat ft =
-                            new SimpleDateFormat("yyyy.MM.dd");
-                        String created_at = ft.format(servicio.getCreatedAt());
-                        int from = servicio.getInt(FROM);
-                        int to = servicio.getInt(TO);
+        Activity activity = getActivity();
+        if (isAdded() && activity!=null) {
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> servicios, ParseException e) {
+                    if (e == null) {
+                        String NAME = Contract.Column.NAME;
+                        String HORARIO = Contract.Column.HORARIO;
+                        String FROM = Contract.Column.FROM;
+                        String TO = Contract.Column.TO;
+                        int size = servicios.size();
+                        records = new Object[size][3];
+                        for (int i = 0; i < size; i++) {
+                            ParseObject servicio = servicios.get(i);
+                            String name = servicio.getString(NAME);
+                            String hora = servicio.getString(HORARIO);
+                            SimpleDateFormat ft =
+                                    new SimpleDateFormat("yyyy.MM.dd");
+                            String created_at = ft.format(servicio.getCreatedAt());
+                            int from = servicio.getInt(FROM);
+                            int to = servicio.getInt(TO);
 
-                        records[i][0] = name;
-                        records[i][1] = hora + " " + getString(R.string.from) + " " + from + " " + getString(R.string.to) + " " + to;
-                        records[i][2] = created_at;
+                            records[i][0] = name;
+                            records[i][1] = hora + " " + "de" + " " + from + " " + "hasta" + " " + to;
+                            records[i][2] = created_at;
+                        }
+                        lista.setAdapter(new AdapterServicios(
+                                mContext,
+                                records, "#ffffff"));
+                    } else {
+                        // handle Parse Exception here
                     }
-                    lista.setAdapter(new AdapterServicios(
-                            mContext,
-                            records, "#ffffff"));
-                } else {
-                    // handle Parse Exception here
                 }
-            }
-        });
+            });
+        }
     }
 
 }
