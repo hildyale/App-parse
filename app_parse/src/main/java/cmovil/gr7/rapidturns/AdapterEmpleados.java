@@ -54,6 +54,7 @@ package cmovil.gr7.rapidturns;
             horario.setText(String.valueOf(records[position][1]));
             horario.setTextColor(Color.parseColor(color));
             tiempo.setText(String.valueOf(records[position][2]));
+            tiempo.setTextColor(Color.parseColor(color));
             if(String.valueOf(records[position][3]).equals("M")) {
                 icono.setImageResource(R.drawable.man);
             }else{

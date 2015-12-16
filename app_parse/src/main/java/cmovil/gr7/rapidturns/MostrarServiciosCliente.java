@@ -132,7 +132,7 @@ public class MostrarServiciosCliente extends Fragment {
                     }
                     lista.setAdapter(new AdapterServicios(
                             mContext,
-                            records, "#ffffff"));
+                            records, "#000000"));
                 } else {
                     // handle Parse Exception here
                 }

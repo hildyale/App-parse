@@ -62,4 +62,8 @@
     <string name="nosynced">Your device appears to be offline. Some files may not have been synced."</string>
     <string name="nonet">No Internet</string>
     <string name="update">Update Data</string>
+    <string name="addFavorites">Add to Favorites</string>
+    <string name="allready">Allready in Favorites</string>
+    <string name="see">See</string>
+    <string name="eliminate">Eliminate</string>
 </resources>

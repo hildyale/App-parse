@@ -133,7 +133,7 @@ public class MostrarEmpleadosCliente extends Fragment {
                     }
                     lista.setAdapter(new AdapterEmpleados(
                             mContext,
-                            records, "#ffffff"));
+                            records, "#000000"));
                 } else {
                     // handle Parse Exception here
                 }

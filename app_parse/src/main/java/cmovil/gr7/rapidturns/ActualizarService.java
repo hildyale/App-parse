@@ -31,7 +31,7 @@ public class ActualizarService extends IntentService {
             NetworkInfo ni = cm.getActiveNetworkInfo();
             if ((ni != null) && (ni.isConnected())) {
                 if (!ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
-                    locales();}
+                    locales();
                     citas();
                     favoritos();
                     empleados();
@@ -49,9 +49,22 @@ public class ActualizarService extends IntentService {
                         Toast.LENGTH_LONG).show();
             }
         }
+    }
 
 
     public void locales() {
+        ParseQuery<ParseUser> query1 = ParseUser.getQuery();
+        query1.fromLocalDatastore();
+        query1.whereEqualTo("type", "local");
+        query1.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> favorites, ParseException e) {
+                int size = favorites.size();
+                for (int i = 0; i < size; i++) {
+                    ParseObject favorite = favorites.get(i);
+                    favorite.unpinInBackground();
+                }
+            }
+        });
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("type", "local");
         query.findInBackground(new FindCallback<ParseUser>() {
@@ -65,7 +78,7 @@ public class ActualizarService extends IntentService {
                 } else {
                     Toast.makeText(
                             getApplicationContext(),
-                            e.getMessage(),
+                            e.getMessage()+" locales",
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -73,6 +86,17 @@ public class ActualizarService extends IntentService {
     }
 
     public void citas() {
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Cita");
+        query1.fromLocalDatastore();
+        query1.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> favorites, ParseException e) {
+                int size = favorites.size();
+                for (int i = 0; i < size; i++) {
+                    ParseObject favorite = favorites.get(i);
+                    favorite.unpinInBackground();
+                }
+            }
+        });
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Cita");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.include("local");
@@ -87,7 +111,7 @@ public class ActualizarService extends IntentService {
                 } else {
                     Toast.makeText(
                             getApplicationContext(),
-                            e.getMessage(),
+                            e.getMessage()+" citas",
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -95,6 +119,17 @@ public class ActualizarService extends IntentService {
     }
 
     public void favoritos(){
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Favorites");
+        query1.fromLocalDatastore();
+        query1.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> favorites, ParseException e) {
+                    int size = favorites.size();
+                    for (int i = 0; i < size; i++) {
+                        ParseObject favorite = favorites.get(i);
+                        favorite.unpinInBackground();
+                    }
+            }
+        });
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Favorites");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.include("local");
@@ -109,7 +144,7 @@ public class ActualizarService extends IntentService {
                 } else {
                     Toast.makeText(
                             getApplicationContext(),
-                            e.getMessage(),
+                            e.getMessage()+" favoritos",
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -117,6 +152,17 @@ public class ActualizarService extends IntentService {
     }
 
     public void empleados() {
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Empleado");
+        query1.fromLocalDatastore();
+        query1.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> favorites, ParseException e) {
+                int size = favorites.size();
+                for (int i = 0; i < size; i++) {
+                    ParseObject favorite = favorites.get(i);
+                    favorite.unpinInBackground();
+                }
+            }
+        });
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Empleado");
         query.findInBackground(new FindCallback<ParseObject>() {
            public void done(List<ParseObject> empleados, ParseException e) {
@@ -129,7 +175,7 @@ public class ActualizarService extends IntentService {
                } else {
                    Toast.makeText(
                            getApplicationContext(),
-                           e.getMessage(),
+                           e.getMessage()+ "empleados",
                            Toast.LENGTH_LONG).show();
                }
            }
@@ -139,6 +185,17 @@ public class ActualizarService extends IntentService {
     }
 
     public void servicios(){
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Servicio");
+        query1.fromLocalDatastore();
+        query1.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> favorites, ParseException e) {
+                int size = favorites.size();
+                for (int i = 0; i < size; i++) {
+                    ParseObject favorite = favorites.get(i);
+                    favorite.unpinInBackground();
+                }
+            }
+        });
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Servicio");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> servicios, ParseException e) {
@@ -149,7 +206,10 @@ public class ActualizarService extends IntentService {
                         servicio.pinInBackground();
                     }
                 } else {
-                    // handle Parse Exception here
+                    Toast.makeText(
+                            getApplicationContext(),
+                            e.getMessage()+ "servicios",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });

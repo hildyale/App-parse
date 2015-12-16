@@ -73,44 +73,9 @@ public class MostrarLocales extends Fragment {
                 Intent intent = new Intent(getActivity().getApplicationContext(), VerLocal.class);
                 intent.putExtra("name", name);
                 intent.putExtra("Id", Id);
+                intent.putExtra("favorite", false);
                 startActivity(intent);
 
-            }
-        });
-
-        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Object[] o = (Object[]) lista.getItemAtPosition(position);
-                String Id = (String) o[1];
-                ParseQuery<ParseUser> query = ParseUser.getQuery();
-                query.getInBackground(Id, new GetCallback<ParseUser>() {
-                    public void done(ParseUser object, ParseException e) {
-                        if (e == null) {
-                            final ProgressDialog dialog = new ProgressDialog(mContext);
-                            dialog.setMessage("Adding...");
-                            dialog.show();
-
-                            ParseObject values = new ParseObject("Favorites");
-                            values.put("user", ParseUser.getCurrentUser());
-                            values.put("local",object);
-
-                            ParseACL acl = new ParseACL();
-                            acl.setPublicReadAccess(true);
-                            values.setACL(acl);
-
-                            values.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    dialog.dismiss();
-                                }
-                            });
-                        } else {
-                            // something went wrong
-                        }
-                    }
-                });
-                return false;
             }
         });
         return lista;

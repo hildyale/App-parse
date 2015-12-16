@@ -71,4 +71,8 @@
     <string name="nosynced">No hay internet fallo la sincronisacion de algunos archivos</string>
     <string name="nonet">No hay internet</string>
     <string name="update">Datos Actualizados</string>
+    <string name="addFavorites">Agregar a Favoritos</string>
+    <string name="allready">Ya esta en Favoritos</string>
+    <string name="see">Ver</string>
+    <string name="eliminate">Eliminar</string>
 </resources>

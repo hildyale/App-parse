@@ -30,11 +30,12 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/horario"
+
         android:layout_below="@+id/nombre"
         android:layout_toRightOf="@+id/icono"
         android:layout_alignParentBottom="true"
         android:paddingBottom="5dp"
-        android:textColor="#fff"
+        android:textColor="#000"
         />
 
     <TextView
@@ -47,7 +48,8 @@
         android:layout_alignEnd="@+id/nombre"
         android:layout_alignParentRight="true"
         android:layout_alignBaseline="@+id/nombre"
-        android:textColor="#fff"
+        android:textColor="#000"
+        android:layout_marginEnd="10dp"
         />
 
 

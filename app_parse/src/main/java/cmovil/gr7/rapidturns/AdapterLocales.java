@@ -44,8 +44,9 @@ public class AdapterLocales extends ArrayAdapter {
 
 
         TextView nombre = (TextView)listItemView.findViewById(R.id.name);
+        ImageView icono = (ImageView)listItemView.findViewById(R.id.icono);
         nombre.setText(String.valueOf(records[position][0]));
-
+        icono.setImageResource(R.drawable.local);
         return listItemView;
 
     }
