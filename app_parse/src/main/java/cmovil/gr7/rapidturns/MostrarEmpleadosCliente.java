@@ -90,6 +90,7 @@ public class MostrarEmpleadosCliente extends Fragment {
             v = inflater.inflate(R.layout.vacio,container,false);
             TextView text = (TextView) v.findViewById(R.id.text);
             String Text = text.getText()+"";
+            text.setTextColor(getResources().getColor(R.color.teal3));
             text.setText(Text+getResources().getString(R.string.title_section5));
         }
         return v;
@@ -103,15 +104,14 @@ public class MostrarEmpleadosCliente extends Fragment {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Empleado");
         query.fromLocalDatastore();
         query.whereEqualTo("local", user);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> empleados, ParseException e) {
-                if (e == null) {
-                    if (empleados.size() != 0){
-                        dataExistsTrue();
-                    }
-                }
+        try{
+            List<ParseObject> empleados = query.find();
+            if (empleados.size() != 0){
+                dataExistsTrue();
             }
-        });
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
     }
 
     public void setUser(ParseUser a){
@@ -122,15 +122,12 @@ public class MostrarEmpleadosCliente extends Fragment {
         String Id = getArguments().getString("Id");
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.fromLocalDatastore();
-        query.getInBackground(Id, new GetCallback<ParseUser>() {
-            public void done(ParseUser object, ParseException e) {
-                if (e == null) {
-                    setUser(object);
-                } else {
-                    // something went wrong
-                }
-            }
-        });
+        try{
+            ParseUser object = query.get(Id);
+            setUser(object);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
     }
 
     public void records() {
@@ -169,7 +166,7 @@ public class MostrarEmpleadosCliente extends Fragment {
                         }
                         lista.setAdapter(new AdapterEmpleados(
                                 mContext,
-                                records, "#000000"));
+                                records, getResources().getColor(R.color.darkgrey)));
                     } else {
                         // handle Parse Exception here
                     }

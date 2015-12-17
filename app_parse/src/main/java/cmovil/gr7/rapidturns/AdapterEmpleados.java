@@ -16,8 +16,8 @@ package cmovil.gr7.rapidturns;
     public class AdapterEmpleados extends ArrayAdapter {
 
         public Object[][] records;
-        public String color;
-        public AdapterEmpleados(Context context,Object[][] A,String a) {
+        public int color;
+        public AdapterEmpleados(Context context,Object[][] A,int a) {
             super(context, 0, A);
             records = A;
             color = a;
@@ -51,10 +51,11 @@ package cmovil.gr7.rapidturns;
 
             //Obteniendo instancia de la Tarea en la posición actual
             nombre.setText(String.valueOf(records[position][0]));
+            nombre.setTextColor(color);
             horario.setText(String.valueOf(records[position][1]));
-            horario.setTextColor(Color.parseColor(color));
+            horario.setTextColor(color);
             tiempo.setText(String.valueOf(records[position][2]));
-            tiempo.setTextColor(Color.parseColor(color));
+            tiempo.setTextColor(color);
             if(String.valueOf(records[position][3]).equals("M")) {
                 icono.setImageResource(R.drawable.man);
             }else{

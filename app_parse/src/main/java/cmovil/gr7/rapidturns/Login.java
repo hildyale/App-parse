@@ -58,7 +58,7 @@ public class Login extends Activity  {
                     NetworkInfo ni = cm.getActiveNetworkInfo();
                     if ((ni != null) && (ni.isConnected())) {
                         final ProgressDialog dialog = new ProgressDialog(Login.this);
-                        dialog.setMessage("Posting...");
+                        dialog.setMessage(getResources().getString(R.string.login));
                         dialog.show();
                         ParseUser.logInInBackground(usernametxt, passwordtxt, new LogInCallback() {
                             @Override

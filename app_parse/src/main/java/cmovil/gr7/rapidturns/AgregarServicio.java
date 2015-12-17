@@ -10,11 +10,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -33,13 +36,16 @@ public class AgregarServicio extends Activity {
     private CheckBox horario;
     private String[] daysString={"L","M","W","J","V","S"};
     private int fromPosition,toPosition;
+    private CalendarView calendario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servicio);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         add = (Button) findViewById(R.id.create);
         name = (EditText) findViewById(R.id.name);
+        calendario = (CalendarView) findViewById(R.id.calendar);
         days[0] = (CheckBox) findViewById(R.id.monday);
         days[1] = (CheckBox) findViewById(R.id.tuesday);
         days[2] = (CheckBox) findViewById(R.id.wednesday);
@@ -131,6 +137,13 @@ public class AgregarServicio extends Activity {
             }
         });
 
+
+        calendario.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                Toast.makeText(AgregarServicio.this,"Dia "+dayOfMonth,Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

@@ -35,6 +35,7 @@ public class MostrarFavoritos extends Fragment {
     private ListView lista;
     private Object[][] records;
     private Context mcontext;
+    private boolean dataexists=false;
 
     public static MostrarFavoritos newInstance(int sectionNumber) {
         MostrarFavoritos fragment = new MostrarFavoritos();
@@ -108,31 +109,61 @@ public class MostrarFavoritos extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        lista = (ListView) inflater.inflate(R.layout.lista, container, false);
-        mcontext = getActivity().getApplicationContext();
-        records();
+        dataexists();
+        View v;
+        if(dataexists) {
+            lista = (ListView) inflater.inflate(R.layout.lista, container, false);
+            mcontext = getActivity().getApplicationContext();
+
+            records();
         /*lista.setAdapter(new ArrayAdapter<String>(
                 getActivity().getActionBar().getThemedContext(),
                 R.layout.item_locales,
                 R.id.name,
                 getResources().getStringArray(R.array.favoritas)));*/
-        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Object[] o = (Object[]) lista.getItemAtPosition(position);
-                String Id = (String) o[1];
-                String name = (String) o[0];
-                Intent intent = new Intent(getActivity().getApplicationContext(), VerLocal.class);
-                intent.putExtra("name", name);
-                intent.putExtra("Id", Id);
-                intent.putExtra("favorite", true);
-                startActivity(intent);
+            lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    Object[] o = (Object[]) lista.getItemAtPosition(position);
+                    String Id = (String) o[1];
+                    String name = (String) o[0];
+                    Intent intent = new Intent(getActivity().getApplicationContext(), VerLocal.class);
+                    intent.putExtra("name", name);
+                    intent.putExtra("Id", Id);
+                    intent.putExtra("favorite", true);
+                    startActivity(intent);
 
+                }
+            });
+            registerForContextMenu(lista);
+            lista.setItemChecked(mCurrentSelectedPosition, true);
+            return lista;
+        }else{
+            v = inflater.inflate(R.layout.vacio,container,false);
+            TextView text = (TextView) v.findViewById(R.id.text);
+            String Text = text.getText()+"";
+            text.setTextColor(getResources().getColor(R.color.teal3));
+            text.setText(Text+getResources().getString(R.string.title_section3));
+            return v;
+        }
+    }
+
+    public void dataExistsTrue(){
+        dataexists = true;
+    }
+
+    public void dataexists(){
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Favorites");
+        query.fromLocalDatastore();
+        try {
+            List<ParseObject> favorites = query.find();
+            if (favorites.size() != 0){
+                dataExistsTrue();
             }
-        });
-        registerForContextMenu(lista);
-        lista.setItemChecked(mCurrentSelectedPosition, true);
-        return lista;
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override

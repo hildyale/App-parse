@@ -41,6 +41,7 @@ public class MostrarEmpleados extends Fragment {
     private int mCurrentSelectedPosition=0;
     private Context mContext;
     private boolean dataexists=false;
+    private String fromString,toString;
 
 
     public static MostrarEmpleados newInstance(int sectionNumber) {
@@ -59,6 +60,8 @@ public class MostrarEmpleados extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        fromString = getResources().getString(R.string.from);
+        toString= getResources().getString(R.string.to);
         dataexists();
         View v;
         if(dataexists) {
@@ -79,13 +82,13 @@ public class MostrarEmpleados extends Fragment {
 
                     Object[] o = (Object[]) lista.getItemAtPosition(position);
                     String str = (String) o[0];//As you are using Default String Adapter
-                    Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
                 }
             });
         }else{
             v = inflater.inflate(R.layout.vacio,container,false);
             TextView text = (TextView) v.findViewById(R.id.text);
             String Text = text.getText()+"";
+            text.setTextColor(getResources().getColor(R.color.amber2));
             text.setText(Text+getResources().getString(R.string.title_section5));
         }
 
@@ -146,13 +149,13 @@ public class MostrarEmpleados extends Fragment {
                             int from = empleado.getInt(FROM);
                             int to = empleado.getInt(TO);
                             records[i][0] = name;
-                            records[i][1] = hora + " " + "de" + " " + from + " " + "hasta" + " " + to;
+                            records[i][1] = hora + " " + fromString + " " + from + " " + toString + " " + to;
                             records[i][2] = created_at;
                             records[i][3] = sex;
                         }
                         lista.setAdapter(new AdapterEmpleados(
                                 mContext,
-                                records, "#ffffff"));
+                                records, getResources().getColor(R.color.darkgrey)));
                     } else {
                         // handle Parse Exception here
                     }

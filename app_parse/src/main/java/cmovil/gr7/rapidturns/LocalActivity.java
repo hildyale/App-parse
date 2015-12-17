@@ -94,14 +94,20 @@ public class LocalActivity extends Activity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
+            case R.id.actualizar:
+                Intent a = new Intent(LocalActivity.this,ActualizarService.class);
+                a.putExtra("name",getActionBar().getTitle()+"");
+                startService(a);
+                return true;
+
             case R.id.addemployed:
-                Intent employed = new Intent(this,AgregarEmpleado.class);
+                Intent employed = new Intent(LocalActivity.this,AgregarEmpleado.class);
                 startActivity(employed);
                 finish();
                 return true;
 
             case R.id.addservice:
-                Intent service = new Intent(this,AgregarServicio.class);
+                Intent service = new Intent(LocalActivity.this,AgregarServicio.class);
                 startActivity(service);
                 finish();
                 return true;

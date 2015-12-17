@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -62,15 +63,10 @@ public class MostrarCitas extends Fragment {
             mContext = getActivity().getApplicationContext();
             lista = (ListView) v.findViewById(R.id.ListView);
             records();
-        /*lista.setAdapter(new AdapterCitas(
-                getActivity().getActionBar().getThemedContext(),
-                records,"#000000"));*/
             lista.setItemChecked(mCurrentSelectedPosition, true);
             lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-
-
                 }
             });
         }else{
@@ -78,6 +74,7 @@ public class MostrarCitas extends Fragment {
             mContext = getActivity().getApplicationContext();
             TextView text = (TextView) v.findViewById(R.id.text);
             String Text = text.getText()+"";
+            text.setTextColor(getResources().getColor(R.color.teal3));
             text.setText(Text+getResources().getString(R.string.title_section1));
         }
 
@@ -120,20 +117,14 @@ public class MostrarCitas extends Fragment {
                         records[i][0] = name;
                         records[i][1] = id;
                     }
-                    lista.setAdapter(new AdapterCitas(
-                            mContext,
-                            records, "#000000"));
+                        lista.setAdapter(new AdapterCitas(
+                                mContext,
+                                records, "#000000"));
                 } else {
                     // handle Parse Exception here
                 }
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        records();
     }
 
     @Override

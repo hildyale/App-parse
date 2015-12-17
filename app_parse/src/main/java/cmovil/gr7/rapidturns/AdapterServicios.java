@@ -15,8 +15,8 @@ import android.widget.TextView;
 public class AdapterServicios extends ArrayAdapter {
 
     public Object[][] records;
-    public String color;
-    public AdapterServicios(Context context,Object[][] A,String a) {
+    public int color;
+    public AdapterServicios(Context context,Object[][] A,int a) {
         super(context, 0, A);
         records = A;
         color = a;
@@ -49,8 +49,9 @@ public class AdapterServicios extends ArrayAdapter {
 
         //Obteniendo instancia de la Tarea en la posición actual
         nombre.setText(String.valueOf(records[position][0]));
+        nombre.setTextColor(color);
         horario.setText(String.valueOf(records[position][1]));
-        horario.setTextColor(Color.parseColor(color));
+        horario.setTextColor(color);
         icono.setImageResource(R.drawable.service);
 
 

@@ -20,6 +20,7 @@
     </style>
 
     <color name="amber">#fff8e1</color>
+    <color name="amber2">#ff6f00</color>
     <style name="amber" parent="android:Theme.Material.Light.DarkActionBar">
         <item name="android:colorPrimary">#ffc107</item>
         <item name="android:colorPrimaryDark">#ff6f00</item>

@@ -49,7 +49,7 @@ public class Register extends Activity {
                     Error(R.string.error_field_required);
                 } else {
                     final ProgressDialog dialog = new ProgressDialog(Register.this);
-                    dialog.setMessage("Posting...");
+                    dialog.setMessage(getResources().getString(R.string.checkin));
                     dialog.show();
                     final ParseUser user = new ParseUser();
                     user.setUsername(usernametxt);

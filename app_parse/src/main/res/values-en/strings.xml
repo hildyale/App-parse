@@ -66,4 +66,6 @@
     <string name="allready">Allready in Favorites</string>
     <string name="see">See</string>
     <string name="eliminate">Eliminate</string>
+    <string name="login">Logging..</string>
+    <string name="checkin">checking in...</string>
 </resources>

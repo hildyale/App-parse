@@ -35,6 +35,7 @@ public class VerLocal extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_local);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         mContext= getApplicationContext();
         String name = getIntent().getExtras().getString("name");
         final String Id =  getIntent().getExtras().getString("Id");

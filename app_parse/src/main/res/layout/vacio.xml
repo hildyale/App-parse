@@ -5,12 +5,15 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/text"
-        android:text="No hay "
-        android:padding="10dp"
-        android:layout_gravity="center_horizontal"
+        android:text="No "
+        android:padding="30dp"
+        android:gravity="center_horizontal"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:background="@drawable/back"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"/>
 
 </RelativeLayout>

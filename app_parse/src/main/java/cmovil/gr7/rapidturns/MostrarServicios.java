@@ -39,6 +39,7 @@ public class MostrarServicios extends Fragment {
     private int mCurrentSelectedPosition=0;
     private Context mContext;
     private boolean dataexists=false;
+    private String fromString,toString;
 
 
     public static MostrarServicios newInstance(int sectionNumber) {
@@ -57,6 +58,8 @@ public class MostrarServicios extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        fromString = getResources().getString(R.string.from);
+        toString = getResources().getString(R.string.to);
         dataexists();
         View v;
         if(dataexists) {
@@ -75,13 +78,13 @@ public class MostrarServicios extends Fragment {
 
                     Object[] o = (Object[]) lista.getItemAtPosition(position);
                     String str = (String) o[0];//As you are using Default String Adapter
-                    Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
                 }
             });
         }else{
             v = inflater.inflate(R.layout.vacio,container,false);
             TextView text = (TextView) v.findViewById(R.id.text);
             String Text = text.getText()+"";
+            text.setTextColor(getResources().getColor(R.color.amber2));
             text.setText(Text+getResources().getString(R.string.title_section6));
         }
 
@@ -96,15 +99,14 @@ public class MostrarServicios extends Fragment {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Servicio");
         query.whereEqualTo("local", ParseUser.getCurrentUser());
         query.fromLocalDatastore();
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> servicios, ParseException e) {
-                if (e == null) {
-                    if (servicios.size() != 0){
-                        dataExistsTrue();
-                    }
-                }
+        try{
+            List<ParseObject> servicios = query.find();
+            if (servicios.size() != 0){
+                dataExistsTrue();
             }
-        });
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
     }
     @Override
     public void onAttach(Activity activity) {
@@ -140,12 +142,12 @@ public class MostrarServicios extends Fragment {
                             int to = servicio.getInt(TO);
 
                             records[i][0] = name;
-                            records[i][1] = hora + " " + "de" + " " + from + " " + "hasta" + " " + to;
+                            records[i][1] = hora + " " + fromString + " " + from + " " + toString + " " + to;
                             records[i][2] = created_at;
                         }
                         lista.setAdapter(new AdapterServicios(
                                 mContext,
-                                records, "#ffffff"));
+                                records, getResources().getColor(R.color.darkgrey)));
                     } else {
                         // handle Parse Exception here
                     }

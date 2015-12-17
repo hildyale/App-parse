@@ -42,12 +42,14 @@
         <activity
             android:name=".AgregarEmpleado"
             android:label="@string/title_activity_empleado"
-            android:theme="@style/amber" >
+            android:theme="@style/amber"
+            android:parentActivityName=".LocalActivity">
         </activity>
         <activity
             android:name=".AgregarServicio"
             android:label="@string/title_activity_servicio"
-            android:theme="@style/amber" >
+            android:theme="@style/amber"
+            android:parentActivityName=".LocalActivity">
         </activity>
         <activity
             android:name=".Calendar"
@@ -55,16 +57,19 @@
         </activity>
         <activity
             android:name=".VerLocal"
-            android:label="@string/title_activity_ver_local" >
+            android:label="@string/title_activity_ver_local"
+            android:parentActivityName=".ClientActivity">
         </activity>
         <activity
             android:name=".Reservar"
-            android:label="@string/title_activity_reservar" >
+            android:label="@string/title_activity_reservar"
+            android:parentActivityName=".VerLocal">
         </activity>
         <activity
             android:name=".Register"
             android:label="@string/title_activity_register"
-            android:theme="@style/cyan" >
+            android:theme="@style/cyan"
+            android:parentActivityName=".Login">
         </activity>
 
         <service

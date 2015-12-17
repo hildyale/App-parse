@@ -67,9 +67,6 @@ public class MostrarServiciosCliente extends Fragment {
             v = inflater.inflate(R.layout.listacliente, container, false);
             lista = (ListView) v.findViewById(R.id.ListView);
             records();
-        /*lista.setAdapter(new AdapterServicios(
-                getActivity().getActionBar().getThemedContext(),
-                records,"#000000"));*/
             lista.setItemChecked(mCurrentSelectedPosition, true);
 
             lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,6 +87,7 @@ public class MostrarServiciosCliente extends Fragment {
             v = inflater.inflate(R.layout.vacio,container,false);
             TextView text = (TextView) v.findViewById(R.id.text);
             String Text = text.getText()+"";
+            text.setTextColor(getResources().getColor(R.color.teal3));
             text.setText(Text+getResources().getString(R.string.title_section6));
         }
 
@@ -104,15 +102,14 @@ public class MostrarServiciosCliente extends Fragment {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Servicio");
         query.fromLocalDatastore();
         query.whereEqualTo("local", user);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> servicios, ParseException e) {
-                if (e == null) {
-                    if (servicios.size() != 0){
-                        dataExistsTrue();
-                    }
-                }
+        try{
+            List<ParseObject> servicios = query.find();
+            if (servicios.size() != 0){
+                dataExistsTrue();
             }
-        });
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
     }
 
     public void setUser(ParseUser a){
@@ -123,15 +120,12 @@ public class MostrarServiciosCliente extends Fragment {
         String Id = getArguments().getString("Id");
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.fromLocalDatastore();
-        query.getInBackground(Id, new GetCallback<ParseUser>() {
-            public void done(ParseUser object, ParseException e) {
-                if (e == null) {
-                    setUser(object);
-                } else {
-                    // something went wrong
-                }
-            }
-        });
+        try{
+            ParseUser object = query.get(Id);
+            setUser(object);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
     }
 
     public void records() {
@@ -167,7 +161,7 @@ public class MostrarServiciosCliente extends Fragment {
                         }
                         lista.setAdapter(new AdapterServicios(
                                 mContext,
-                                records, "#000000"));
+                                records, getResources().getColor(R.color.darkgrey)));
                     } else {
                         // handle Parse Exception here
                     }

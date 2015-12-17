@@ -4,7 +4,7 @@
     <string name="app_name">RapidTurns</string>
     <string name="title_section1">Citas</string>
     <string name="title_section2">Locales</string>
-    <string name="title_section3">Favoritas</string>
+    <string name="title_section3">Favoritos</string>
     <string name="title_section4">Otros</string>
     <string name="title_section5">Empleados</string>
     <string name="title_section6">Servicios</string>
@@ -75,4 +75,6 @@
     <string name="allready">Ya esta en Favoritos</string>
     <string name="see">Ver</string>
     <string name="eliminate">Eliminar</string>
+    <string name="login">Logeando..</string>
+    <string name="checkin">Registrandose...</string>
 </resources>

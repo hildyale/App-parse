@@ -40,6 +40,7 @@ public class AgregarEmpleado extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empleado);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         add = (Button) findViewById(R.id.create);
         name = (EditText) findViewById(R.id.name);
         lastname = (EditText) findViewById(R.id.lastname);
