@@ -52,6 +52,7 @@
     <string name="wednesday">Miercoles </string>
     <string name="thursday">Jueves </string>
     <string name="friday">Viernes </string>
+    <string name="sunday">Domingo </string>
     <string name="from">De </string>
     <string name="to">Hasta </string>
     <string name="errordays">Seleccione almenos un dia </string>
@@ -77,4 +78,10 @@
     <string name="eliminate">Eliminar</string>
     <string name="login">Logeando..</string>
     <string name="checkin">Registrandose...</string>
+    <string name="select">Seleccione hora de la reserva</string>
+    <string name="confirm">Confirmar Reserva</string>
+    <string name="cancel">Cancelar</string>
+    <string name="noenabled">Horario no disponible</string>
+    <string name="removeTitle">Eliminar</string>
+    <string name="removeMsn">desea eliminar a</string>
 </resources>

@@ -2,13 +2,19 @@ package cmovil.gr7.rapidturns;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,6 +25,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -26,6 +33,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -39,8 +47,10 @@ public class MostrarServicios extends Fragment {
     private int mCurrentSelectedPosition=0;
     private Context mContext;
     private boolean dataexists=false;
-    private String fromString,toString;
-
+    private int color;
+    private String msn;
+    private String title;
+    ProgressDialog dialog;
 
     public static MostrarServicios newInstance(int sectionNumber) {
         MostrarServicios fragment = new MostrarServicios();
@@ -58,8 +68,11 @@ public class MostrarServicios extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        fromString = getResources().getString(R.string.from);
-        toString = getResources().getString(R.string.to);
+        color = getResources().getColor(R.color.darkgrey);
+        msn = getActivity().getString(R.string.removeMsn);
+        dialog = new ProgressDialog(getActivity());
+        dialog.setMessage(getResources().getString(R.string.login));
+        title = getActivity().getString(R.string.removeTitle);
         dataexists();
         View v;
         if(dataexists) {
@@ -78,8 +91,14 @@ public class MostrarServicios extends Fragment {
 
                     Object[] o = (Object[]) lista.getItemAtPosition(position);
                     String str = (String) o[0];//As you are using Default String Adapter
+                    Intent intent = new Intent(getActivity().getApplicationContext(), VerCalendario.class);
+                    intent.putExtra("nombre", str);
+                    intent.putExtra("id", o[2] + "");
+                    intent.putExtra("type", "Servicio");
+                    startActivity(intent);
                 }
             });
+            registerForContextMenu(lista);
         }else{
             v = inflater.inflate(R.layout.vacio,container,false);
             TextView text = (TextView) v.findViewById(R.id.text);
@@ -89,6 +108,98 @@ public class MostrarServicios extends Fragment {
         }
 
         return v;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId()==R.id.ListView) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            Object[] o = (Object[]) lista.getItemAtPosition(info.position);
+            menu.setHeaderTitle(o[0] + "");
+            String[] menuItems = getResources().getStringArray(R.array.menu);
+            for (int i = 0; i<menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        Object[] o = (Object[]) lista.getItemAtPosition(info.position);
+        final String Id = (String) o[2];
+
+        switch (item.getItemId()) {
+            case 0:
+                String str = (String) o[0];//As you are using Default String Adapter
+                Intent intent = new Intent(getActivity().getApplicationContext(), VerCalendario.class);
+                intent.putExtra("nombre", str);
+                intent.putExtra("id", o[2] + "");
+                intent.putExtra("type", "Servicio");
+                startActivity(intent);
+                return true;
+
+            case 1:
+                ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Empleado");
+                query1.fromLocalDatastore();
+                query1.include("local");
+                query1.findInBackground(new FindCallback<ParseObject>() {
+                    public void done(List<ParseObject> empleados, ParseException e) {
+                        int size = empleados.size();
+                        for (int i = 0; i < size; i++) {
+                            final ParseObject empleado = empleados.get(i);
+                            String id = empleado.getObjectId();
+                            if(id.equals(Id)){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setMessage(msn+" "+empleado.getString("name"))
+                                        .setTitle(title);
+                                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialo, int id) {
+                                        dialog.show();
+                                        ParseObject semana = empleado.getParseObject("horario");
+                                        borrar(semana);
+                                        List<ParseObject> list = Arrays.asList(empleado, semana);
+                                        ParseObject.unpinAllInBackground(list, new DeleteCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                records();
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                        ParseObject.deleteAllInBackground(list);
+                                    }
+                                });
+                                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //nothing
+                                    }
+                                });
+                                AlertDialog dialo = builder.create();
+                                dialo.show();
+                            }
+
+                        }
+                    }
+                });
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    public void borrar(ParseObject semana){
+        ParseObject Lunes = semana.getParseObject("Lunes");
+        ParseObject Martes = semana.getParseObject("Martes");
+        ParseObject Miercoles = semana.getParseObject("Miercoles");
+        ParseObject Jueves = semana.getParseObject("Jueves");
+        ParseObject Viernes = semana.getParseObject("Viernes");
+        ParseObject Sabado = semana.getParseObject("Sabado");
+        ParseObject Domingo = semana.getParseObject("Domingo");
+        List<ParseObject> lista =  Arrays.asList(Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo);
+        ParseObject.unpinAllInBackground(lista);
+        ParseObject.deleteAllInBackground(lista);
     }
 
     public void dataExistsTrue(){
@@ -118,7 +229,6 @@ public class MostrarServicios extends Fragment {
 
     public void records() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Servicio");
-        query.whereEqualTo("local", ParseUser.getCurrentUser());
         query.fromLocalDatastore();
         Activity activity = getActivity();
         if (isAdded() && activity!=null) {
@@ -134,20 +244,17 @@ public class MostrarServicios extends Fragment {
                         for (int i = 0; i < size; i++) {
                             ParseObject servicio = servicios.get(i);
                             String name = servicio.getString(NAME);
-                            String hora = servicio.getString(HORARIO);
                             SimpleDateFormat ft =
                                     new SimpleDateFormat("yyyy.MM.dd");
                             String created_at = ft.format(servicio.getCreatedAt());
-                            int from = servicio.getInt(FROM);
-                            int to = servicio.getInt(TO);
-
+                            String id = servicio.getObjectId();
                             records[i][0] = name;
-                            records[i][1] = hora + " " + fromString + " " + from + " " + toString + " " + to;
-                            records[i][2] = created_at;
+                            records[i][1] = created_at;
+                            records[i][2] = id;
                         }
                         lista.setAdapter(new AdapterServicios(
                                 mContext,
-                                records, getResources().getColor(R.color.darkgrey)));
+                                records, color));
                     } else {
                         // handle Parse Exception here
                     }

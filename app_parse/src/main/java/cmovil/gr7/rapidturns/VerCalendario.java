@@ -37,19 +37,21 @@ import java.util.Date;
 import java.util.List;
 
 
-public class Reservar extends Activity {
+public class VerCalendario extends Activity {
     private TextView name;
+    private int time;
+    private Button add;
+    private ParseUser user;
     private ImageView images[][] = new ImageView[7][11];
     private String dias[] = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
     private String horas[] = {"hora8","hora9","hora10","hora11","hora12","hora13","hora14","hora15","hora16","hora17","hora18"};
-    private String[] days;
-    private String[] hours = {"8:00 am","9:00am","10:00 am","11:00 am","12:00 pm","1:00 pm","2:00 pm","3:00 pm","4:00 pm","5:00 pm","6:00 pm"};
-    private ParseObject quien,week;
+    private static String[] days;
+    private static String[] hours = {"8:00 am","9:00am","10:00 am","11:00 am","12:00 pm","1:00 pm","2:00 pm","3:00 pm","4:00 pm","5:00 pm","6:00 pm"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayHomeAsUpEnabled(false);
         setContentView(R.layout.activity_calendar);
         String[] diasTemp = {getString(R.string.monday),getString(R.string.tuesday),getString(R.string.wednesday),getString(R.string.thursday),getString(R.string.friday),getString(R.string.saturday),getString(R.string.sunday)};
         days = diasTemp;
@@ -154,7 +156,6 @@ public class Reservar extends Activity {
                 if (e == null) {
                     ParseObject semana = (ParseObject)object.get("horario");
                     setCalendar(semana);
-                    setQuien(object);
                 } else {
                     // something went wrong
                 }
@@ -162,122 +163,45 @@ public class Reservar extends Activity {
         });
     }
 
-    public void setQuien(ParseObject a){
-        quien = a;
-    }
-
     public void setCalendar(ParseObject semana){
-        week = semana;
         ImageView a;
         for(int i=0;i<7;i++){
             ParseObject dia = (ParseObject)semana.get(dias[i]);
             for(int j=0;j<11;j++){
                 a = images[i][j];
-                    String cita = (String) dia.get(horas[j]);
+                    String cita =  (String)dia.get(horas[j]);
                     if(cita!=null) {
                         a.setImageResource(R.drawable.backfalse);
-                        setlistenernoenbaled(a);
+                        setlistener(a, i, j, cita);
                     }
                     else{
                         a.setImageResource(R.drawable.backtrue);
-                        setlistener(a, i, j);
                     }
             }
 
         }
     }
 
-    public  void setlistenernoenbaled(final ImageView a){
+    public void setlistener(final ImageView a,final int i,final int j,final String title){
         a.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Reservar.this,getString(R.string.noenabled),Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void setlistener(final ImageView a,final int i,final int j){
-        a.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Reservar.this);
-                String type = getIntent().getExtras().getString("type");
-                String msn=quien.getString("name")+"\n"+days[i]+" "+hours[j];
-                String title=getString(R.string.confirm);
+                AlertDialog.Builder builder = new AlertDialog.Builder(VerCalendario.this);
+                String msn = getIntent().getExtras().getString("nombre")+"\n"+days[i]+" "+hours[j];
                 builder.setMessage(msn)
                         .setTitle(title);
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        records(i,j);
-                    }
-                });
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //nothing
+                        // User clicked OK button
                     }
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-            }
-        });
-    }
-
-
-    public void records(final int i,final int j){
-        final String type = getIntent().getExtras().getString("type");
-        String local = getIntent().getExtras().getString("local");
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.fromLocalDatastore();
-        query.getInBackground(local, new GetCallback<ParseUser>() {
-            public void done(ParseUser object, ParseException e) {
-                if (e == null) {
-                    final ProgressDialog dialog = new ProgressDialog(Reservar.this);
-                    dialog.setMessage("Posting...");
-                    dialog.show();
-
-                    ParseObject values = new ParseObject("Cita");
-                    values.put("dia", i);
-                    values.put("hora", j);
-                    values.put("user", ParseUser.getCurrentUser());
-                    values.put(type, quien);
-                    values.put("local", object);
-                    values.put("semana", week);
-                    ParseACL acl = new ParseACL();
-                    acl.setPublicReadAccess(true);
-                    acl.setPublicWriteAccess(true);
-                    values.setACL(acl);
-
-                    String msn=ParseUser.getCurrentUser().getString("name");
-                    ParseObject dia = (ParseObject)week.get(dias[i]);
-                    dia.put(horas[j],msn);
-
-                    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo ni = cm.getActiveNetworkInfo();
-                    if ((ni != null) && (ni.isConnected())) {
-                        values.pinInBackground();
-                        values.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if (e == null) {
-                                    dialog.dismiss();
-                                    finish();
-                                } else {
-                                    Log.d("error1 : ", e.getMessage());
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    }else{
-                        Toast.makeText(getApplicationContext(), "NO INTERNET" , Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    // something went wrong
                 }
-            }
-        });
+            });
     }
 
-    }
+}
 
 
 

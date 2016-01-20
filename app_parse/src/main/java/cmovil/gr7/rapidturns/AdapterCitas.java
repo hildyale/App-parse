@@ -42,13 +42,16 @@ public class AdapterCitas extends ArrayAdapter {
 
         //Obteniendo instancias de los elementos
         TextView nombre = (TextView)listItemView.findViewById(R.id.nombre);
+        TextView quien = (TextView)listItemView.findViewById(R.id.quien);
         TextView horario = (TextView)listItemView.findViewById(R.id.horario);
         ImageView icono = (ImageView)listItemView.findViewById(R.id.icono);
 
 
         //Obteniendo instancia de la Tarea en la posición actual
         nombre.setText(String.valueOf(records[position][0]));
-        horario.setText(String.valueOf(records[position][1]));
+        quien.setText(String.valueOf(records[position][1]));
+        quien.setTextColor(Color.parseColor(color));
+        horario.setText(String.valueOf(records[position][2]));
         horario.setTextColor(Color.parseColor(color));
         icono.setImageResource(R.drawable.citas);
 

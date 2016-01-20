@@ -45,6 +45,7 @@
     <string name="wednesday">Wednesday </string>
     <string name="thursday">Thursday </string>
     <string name="friday">Friday </string>
+    <string name="sunday">Sunday </string>
     <string name="from">From </string>
     <string name="to">To </string>
     <string name="errordays">Select at least one day</string>
@@ -68,4 +69,10 @@
     <string name="eliminate">Eliminate</string>
     <string name="login">Logging..</string>
     <string name="checkin">checking in...</string>
+    <string name="select">select time of booking</string>
+    <string name="confirm">Confirm Reservation</string>
+    <string name="cancel">Cancel</string>
+    <string name="noenabled">Time not available</string>
+    <string name="removeTitle">Remove</string>
+    <string name="removeMsn">You want to remove</string>
 </resources>

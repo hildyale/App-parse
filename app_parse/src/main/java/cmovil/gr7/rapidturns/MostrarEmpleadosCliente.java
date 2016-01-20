@@ -79,9 +79,9 @@ public class MostrarEmpleadosCliente extends Fragment {
                     Object[] o = (Object[]) lista.getItemAtPosition(position);
                     String str = (String) o[0];//As you are using Default String Adapter
                     Intent intent = new Intent(getActivity().getApplicationContext(), Reservar.class);
-                    intent.putExtra("nombre", getString(R.string.reservarServicio) + " " + str);
-                    intent.putExtra("id", o[4] + "");
-                    intent.putExtra("local", o[5] + "");
+                    intent.putExtra("nombre", str);
+                    intent.putExtra("id", o[3] + "");
+                    intent.putExtra("local", o[4] + "");
                     intent.putExtra("type", "Empleado");
                     startActivity(intent);
                 }
@@ -140,29 +140,22 @@ public class MostrarEmpleadosCliente extends Fragment {
                 public void done(List<ParseObject> empleados, ParseException e) {
                     if (e == null) {
                         String NAME = Contract.Column.NAME;
-                        String HORARIO = Contract.Column.HORARIO;
                         String SEX = Contract.Column.SEX;
-                        String FROM = Contract.Column.FROM;
-                        String TO = Contract.Column.TO;
                         int size = empleados.size();
-                        records = new Object[size][6];
+                        records = new Object[size][5];
                         for (int i = 0; i < size; i++) {
                             ParseObject empleado = empleados.get(i);
                             String name = empleado.getString(NAME);
-                            String hora = empleado.getString(HORARIO);
                             SimpleDateFormat ft =
                                     new SimpleDateFormat("yyyy.MM.dd");
                             String created_at = ft.format(empleado.getCreatedAt());
                             String sex = empleado.getString(SEX);
                             String id = empleado.getObjectId();
-                            int from = empleado.getInt(FROM);
-                            int to = empleado.getInt(TO);
                             records[i][0] = name;
-                            records[i][1] = hora + " " + getString(R.string.from) + " " + from + " " + getString(R.string.to) + " " + to;
-                            records[i][2] = created_at;
-                            records[i][3] = sex;
-                            records[i][4] = id;
-                            records[i][5] = Id;
+                            records[i][1] = created_at;
+                            records[i][2] = sex;
+                            records[i][3] = id;
+                            records[i][4] = Id;
                         }
                         lista.setAdapter(new AdapterEmpleados(
                                 mContext,

@@ -3,6 +3,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text"
+        android:text="No "
+        android:padding="30dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:background="@drawable/vacio"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"/>
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -14,6 +28,8 @@
             android:layout_marginLeft="5dp"
             android:choiceMode="singleChoice"
             android:divider="@color/teal"
+            android:layout_weight="10"
             />
+
 
 </LinearLayout>

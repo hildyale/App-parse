@@ -42,14 +42,14 @@
         <activity
             android:name=".AgregarEmpleado"
             android:label="@string/title_activity_empleado"
-            android:theme="@style/amber"
-            android:parentActivityName=".LocalActivity">
+            android:parentActivityName=".LocalActivity"
+            android:theme="@style/amber" >
         </activity>
         <activity
             android:name=".AgregarServicio"
             android:label="@string/title_activity_servicio"
-            android:theme="@style/amber"
-            android:parentActivityName=".LocalActivity">
+            android:parentActivityName=".LocalActivity"
+            android:theme="@style/amber" >
         </activity>
         <activity
             android:name=".Calendar"
@@ -58,22 +58,35 @@
         <activity
             android:name=".VerLocal"
             android:label="@string/title_activity_ver_local"
-            android:parentActivityName=".ClientActivity">
+            android:parentActivityName=".ClientActivity" >
         </activity>
         <activity
             android:name=".Reservar"
             android:label="@string/title_activity_reservar"
-            android:parentActivityName=".VerLocal">
+            android:parentActivityName=".VerLocal" >
         </activity>
         <activity
             android:name=".Register"
             android:label="@string/title_activity_register"
-            android:theme="@style/cyan"
-            android:parentActivityName=".Login">
+            android:parentActivityName=".Login"
+            android:theme="@style/cyan" >
+        </activity>
+        <activity
+            android:name=".VerCalendario"
+            android:parentActivityName=".LocalActivity"
+            android:theme="@style/amber" >
         </activity>
 
         <service
             android:name=".ActualizarService"
+            android:exported="false" >
+        </service>
+        <service
+            android:name=".ActualizarServicelocal"
+            android:exported="false" >
+        </service>
+        <service
+            android:name=".Borrar"
             android:exported="false" >
         </service>
     </application>

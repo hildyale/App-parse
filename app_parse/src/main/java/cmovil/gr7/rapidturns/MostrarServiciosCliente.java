@@ -76,7 +76,7 @@ public class MostrarServiciosCliente extends Fragment {
                     Object[] o = (Object[]) lista.getItemAtPosition(position);
                     String str = (String) o[0];//As you are using Default String Adapter
                     Intent intent = new Intent(getActivity().getApplicationContext(), Reservar.class);
-                    intent.putExtra("nombre", getString(R.string.reservarServicio) + " " + str);
+                    intent.putExtra("nombre", str);
                     intent.putExtra("id", o[3] + "");
                     intent.putExtra("local", o[4] + "");
                     intent.putExtra("type", "Servicio");

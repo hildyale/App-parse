@@ -72,8 +72,14 @@ public class Register extends Activity {
                                 dialog.dismiss();
                                 if(user.getString("type").equals("cliente")){
                                     startActivity(new Intent(Register.this, ClientActivity.class));
+                                    Intent a = new Intent(Register.this,ActualizarService.class);
+                                    a.putExtra("show",false);
+                                    startService(a);
                                 }else{
                                     startActivity(new Intent(Register.this, LocalActivity.class));
+                                    Intent a = new Intent(Register.this,ActualizarServicelocal.class);
+                                    a.putExtra("show",false);
+                                    startService(a);
                                 }
                                 finish();
                             } else {

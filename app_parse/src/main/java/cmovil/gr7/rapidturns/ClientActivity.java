@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
-import com.parse.ParseObject;
+import com.parse.Parse;
 import com.parse.ParseUser;
 
 
@@ -29,6 +30,7 @@ public class ClientActivity extends Activity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private int Position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class ClientActivity extends Activity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
+        Position = position;
         FragmentManager fragmentManager = getFragmentManager();
             switch (position) {
                 case 0:
@@ -118,9 +121,15 @@ public class ClientActivity extends Activity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
+            case R.id.borrar:
+                Intent b = new Intent(ClientActivity.this,Borrar.class);
+                b.putExtra("show",true);
+                startService(b);
+                return true;
+
             case R.id.actualizar:
                 Intent a = new Intent(ClientActivity.this,ActualizarService.class);
-                a.putExtra("name",getActionBar().getTitle()+"");
+                a.putExtra("show", true);
                 startService(a);
                 return true;
             case R.id.action_settings:
@@ -137,6 +146,7 @@ public class ClientActivity extends Activity
                 startActivity(intent);
                 return true;
             case R.id.cerrar_sesion:
+                finish();
                 ParseUser.logOut();
                 Intent cerrar = new Intent(this, Login.class);
                 startActivity(cerrar);
@@ -146,44 +156,18 @@ public class ClientActivity extends Activity
         }
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("accion ", "on resume");
 
-        public PlaceholderFragment() {
-        }
+    }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((ClientActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
-        }
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("accion ", "on pause");
     }
 
 }

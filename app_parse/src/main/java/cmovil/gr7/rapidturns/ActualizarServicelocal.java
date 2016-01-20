@@ -15,20 +15,19 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class ActualizarService extends IntentService {
+public class ActualizarServicelocal extends IntentService {
     private Handler mHandler;
-    private Boolean show;
+    Boolean show;
     @Override
     public void onCreate() {
         super.onCreate();
         mHandler = new Handler();
     }
 
-    public ActualizarService() {
-        super("ActualizarService");
+    public ActualizarServicelocal() {
+        super("ActualizarServicelocal");
     }
 
     @Override
@@ -39,10 +38,7 @@ public class ActualizarService extends IntentService {
             NetworkInfo ni = cm.getActiveNetworkInfo();
             if ((ni != null) && (ni.isConnected())) {
                 if (!ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
-                    borrarTodo();
-                    locales();
-                    citas();
-                    favoritos();
+                    borrar();
                     empleados();
                     servicios();
                     semana();
@@ -50,8 +46,8 @@ public class ActualizarService extends IntentService {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            if (show) {
-                                Toast.makeText(ActualizarService.this, R.string.update, Toast.LENGTH_LONG).show();
+                            if(show) {
+                                Toast.makeText(ActualizarServicelocal.this, R.string.update, Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -66,7 +62,7 @@ public class ActualizarService extends IntentService {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(ActualizarService.this, R.string.nosynced, Toast.LENGTH_LONG).show();
+                        Toast.makeText(ActualizarServicelocal.this, R.string.nosynced, Toast.LENGTH_LONG).show();
                         if(show) {
                             sendBroadcast(new Intent("ccmovil.gr7.rapidturns.NEW_EMPLEADOS"));
                         }else{
@@ -78,81 +74,14 @@ public class ActualizarService extends IntentService {
         }
     }
 
-    public  void borrarTodo(){
+    public void borrar(){
         ParseObject.unpinAllInBackground();
     }
-    public void locales() {
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereEqualTo("type", "local");
-        query.findInBackground(new FindCallback<ParseUser>() {
-            public void done(List<ParseUser> locales, ParseException e) {
-                if (e == null) {
-                    int size = locales.size();
-                    for (int i = 0; i < size; i++) {
-                        ParseObject local = locales.get(i);
-                        local.pinInBackground();
-                    }
-                } else {
-                    Toast.makeText(
-                            getApplicationContext(),
-                            e.getMessage()+" locales",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
 
-    public void citas() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Cita");
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.include("local");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> citas, ParseException e) {
-                if (e == null) {
-                    int size = citas.size();
-                    for (int i = 0; i < size; i++) {
-                        ParseObject cita = citas.get(i);
-                        cita.pinInBackground();
-                    }
-                    if(show) {
-                        sendBroadcast(new Intent("ccmovil.gr7.rapidturns.NEW_DATES"));
-                    }else {
-                        sendBroadcast(new Intent("ccmovil.gr7.rapidturns.NEW_DATESv2"));
-                    }
-                } else {
-                    Toast.makeText(
-                            getApplicationContext(),
-                            e.getMessage()+" citas",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
-    public void favoritos(){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Favorites");
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
-        query.include("local");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> favorites, ParseException e) {
-                if (e == null) {
-                    int size = favorites.size();
-                    for (int i = 0; i < size; i++) {
-                        ParseObject favorite = favorites.get(i);
-                        favorite.pinInBackground();
-                    }
-                } else {
-                    Toast.makeText(
-                            getApplicationContext(),
-                            e.getMessage()+" favoritos",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
 
     public void empleados() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Empleado");
+        query.whereEqualTo("local", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<ParseObject>() {
            public void done(List<ParseObject> empleados, ParseException e) {
                if (e == null) {
@@ -160,6 +89,11 @@ public class ActualizarService extends IntentService {
                    for (int i = 0; i < size; i++) {
                        ParseObject empleado = empleados.get(i);
                        empleado.pinInBackground();
+                   }
+                   if(show) {
+                       sendBroadcast(new Intent("ccmovil.gr7.rapidturns.NEW_EMPLEADOS"));
+                   }else{
+                       sendBroadcast(new Intent("ccmovil.gr7.rapidturns.NEW_EMPLEADOSv2"));
                    }
                } else {
                    Toast.makeText(
@@ -175,6 +109,7 @@ public class ActualizarService extends IntentService {
 
     public void servicios(){
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Servicio");
+        query.whereEqualTo("local", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> servicios, ParseException e) {
                 if (e == null) {
@@ -237,5 +172,6 @@ public class ActualizarService extends IntentService {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
     }
 }

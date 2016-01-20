@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:padding="10dp">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -30,11 +31,13 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/horario"
-        android:layout_below="@+id/nombre"
-        android:layout_toRightOf="@+id/icono"
-        android:layout_alignParentBottom="true"
-        android:paddingBottom="5dp"
-        android:textColor="#fff"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:layout_alignEnd="@+id/nombre"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/nombre"
+        android:textColor="#000"
+        android:layout_marginEnd="10dp"
         />
 
 

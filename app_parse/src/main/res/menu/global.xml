@@ -1,6 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/actualizar" android:title="@string/action_example"
+    <item android:id="@+id/borrar" android:title="@string/action_example"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_star_white_24dp"/>
+     <item android:id="@+id/actualizar" android:title="@string/action_example"
         android:showAsAction="always"
         android:icon="@drawable/ic_autorenew_white_48dp"/>
     <item android:id="@+id/action_settings" android:title="@string/action_settings"

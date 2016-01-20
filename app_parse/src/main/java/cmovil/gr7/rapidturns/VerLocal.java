@@ -35,7 +35,7 @@ public class VerLocal extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_local);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(false);
         mContext= getApplicationContext();
         String name = getIntent().getExtras().getString("name");
         final String Id =  getIntent().getExtras().getString("Id");
@@ -111,6 +111,7 @@ public class VerLocal extends Activity {
 
                         ParseACL acl = new ParseACL();
                         acl.setPublicReadAccess(true);
+                        acl.setPublicWriteAccess(true);
                         values.setACL(acl);
 
                         values.saveInBackground(new SaveCallback() {

@@ -80,6 +80,7 @@ public class MostrarFavoritos extends Fragment {
                             if(id.equals(Id)){
                                 favorite.deleteInBackground();
                                 favorite.unpinInBackground();
+                                records();
                             }
 
                         }

@@ -45,18 +45,15 @@ package cmovil.gr7.rapidturns;
             //Obteniendo instancias de los elementos
             TextView nombre = (TextView)listItemView.findViewById(R.id.nombre);
             TextView tiempo = (TextView)listItemView.findViewById(R.id.tiempo);
-            TextView horario = (TextView)listItemView.findViewById(R.id.horario);
             ImageView icono = (ImageView)listItemView.findViewById(R.id.icono);
 
 
             //Obteniendo instancia de la Tarea en la posición actual
             nombre.setText(String.valueOf(records[position][0]));
             nombre.setTextColor(color);
-            horario.setText(String.valueOf(records[position][1]));
-            horario.setTextColor(color);
-            tiempo.setText(String.valueOf(records[position][2]));
+            tiempo.setText(String.valueOf(records[position][1]));
             tiempo.setTextColor(color);
-            if(String.valueOf(records[position][3]).equals("M")) {
+            if(String.valueOf(records[position][2]).equals("M")) {
                 icono.setImageResource(R.drawable.man);
             }else{
                 icono.setImageResource(R.drawable.woman);

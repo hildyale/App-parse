@@ -13,6 +13,10 @@
         <item>@string/eliminate</item>
     </string-array>
 
+    <string-array name="menucitas">
+        <item>@string/eliminate</item>
+    </string-array>
+
     <string-array name="panel_optionsLocal">
         <item>@string/title_section5</item>
         <item>@string/title_section6</item>

@@ -7,141 +7,109 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class AgregarServicio extends Activity {
     private Button add;
     private EditText name;
-    private RadioGroup sex;
-    private RadioButton male;
-    private Spinner from,to;
-    private CheckBox[] days = new CheckBox[6];
-    private CheckBox horario;
-    private String[] daysString={"L","M","W","J","V","S"};
-    private int fromPosition,toPosition;
-    private CalendarView calendario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servicio);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(false);
         add = (Button) findViewById(R.id.create);
         name = (EditText) findViewById(R.id.name);
-        calendario = (CalendarView) findViewById(R.id.calendar);
-        days[0] = (CheckBox) findViewById(R.id.monday);
-        days[1] = (CheckBox) findViewById(R.id.tuesday);
-        days[2] = (CheckBox) findViewById(R.id.wednesday);
-        days[3] = (CheckBox) findViewById(R.id.thursday);
-        days[4] = (CheckBox) findViewById(R.id.friday);
-        days[5] = (CheckBox) findViewById(R.id.saturday);
-        from = (Spinner) findViewById(R.id.from);
-        to = (Spinner) findViewById(R.id.to);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.hours, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        from.setAdapter(adapter);
-        to.setAdapter(adapter);
-
-        from.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int pos, long id) {
-                fromPosition = pos + 5;
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Another interface callback
-            }
-        });
-
-        to.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int pos, long id) {
-                toPosition = pos + 5;
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Another interface callback
-            }
-        });
-
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String Name = name.getText() + "";
-                String hora = "";
-                for (int i = 0; i < 6; i++) {
-                    horario = days[i];
-                    if (horario.isChecked()) {
-                        hora = hora + daysString[i];
-                    }
-                }
-
-                Date dNow = new Date();
-                SimpleDateFormat ft =
-                        new SimpleDateFormat("yyyy.MM.dd");
-
                 if (Name.equals("")) {
                     Error(R.string.error_field_required);
                 } else {
-                    if (hora.equals("")) {
-                        Error(R.string.errordays);
+                    final ProgressDialog dialog = new ProgressDialog(AgregarServicio.this);
+                    dialog.setMessage("Posting...");
+                    dialog.show();
 
-                    } else {
-                        if (toPosition - fromPosition < 1) {
-                            Error(R.string.error_schedule);
-                        } else {
+                    ParseObject Lunes = new ParseObject("Dia");
+                    ParseACL acl1 = new ParseACL();
+                    acl1.setPublicReadAccess(true);
+                    acl1.setPublicWriteAccess(true);
+                    Lunes.setACL(acl1);
 
-                            final ProgressDialog dialog = new ProgressDialog(AgregarServicio.this);
-                            dialog.setMessage("Posting...");
-                            dialog.show();
+                    ParseObject Martes = new ParseObject("Dia");
+                    ParseACL acl2 = new ParseACL();
+                    acl2.setPublicReadAccess(true);
+                    acl2.setPublicWriteAccess(true);
+                    Martes.setACL(acl2);
 
-                            ParseObject values = new ParseObject("Servicio");
-                            values.put(Contract.Column.NAME, Name);
-                            values.put(Contract.Column.HORARIO, hora);
-                            values.put(Contract.Column.FROM, fromPosition);
-                            values.put(Contract.Column.TO, toPosition);
-                            values.put("local", ParseUser.getCurrentUser());
-                            ParseACL acl = new ParseACL();
-                            acl.setPublicReadAccess(true);
-                            values.setACL(acl);
+                    ParseObject Miercoles = new ParseObject("Dia");
+                    ParseACL acl3 = new ParseACL();
+                    acl3.setPublicReadAccess(true);
+                    acl3.setPublicWriteAccess(true);
+                    Miercoles.setACL(acl3);
 
-                            values.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    dialog.dismiss();
-                                    finish();
-                                }
-                            });
+                    ParseObject Jueves = new ParseObject("Dia");
+                    ParseACL acl4 = new ParseACL();
+                    acl4.setPublicReadAccess(true);
+                    acl4.setPublicWriteAccess(true);
+                    Jueves.setACL(acl4);
+
+                    ParseObject Viernes = new ParseObject("Dia");
+                    ParseACL acl5 = new ParseACL();
+                    acl5.setPublicReadAccess(true);
+                    acl5.setPublicWriteAccess(true);
+                    Viernes.setACL(acl5);
+
+                    ParseObject Sabado = new ParseObject("Dia");
+                    ParseACL acl6 = new ParseACL();
+                    acl6.setPublicReadAccess(true);
+                    acl6.setPublicWriteAccess(true);
+                    Sabado.setACL(acl6);
+
+                    ParseObject Domingo = new ParseObject("Dia");
+                    ParseACL acl7 = new ParseACL();
+                    acl7.setPublicReadAccess(true);
+                    acl7.setPublicWriteAccess(true);
+                    Domingo.setACL(acl7);
+
+                    ParseObject semana = new ParseObject("Semana");
+                    semana.put("Lunes", Lunes);
+                    semana.put("Martes", Martes);
+                    semana.put("Miercoles", Miercoles);
+                    semana.put("Jueves", Jueves);
+                    semana.put("Viernes", Viernes);
+                    semana.put("Sabado", Sabado);
+                    semana.put("Domingo", Domingo);
+                    ParseACL acl8 = new ParseACL();
+                    acl8.setPublicReadAccess(true);
+                    acl8.setPublicWriteAccess(true);
+                    semana.setACL(acl8);
+
+                    ParseObject values = new ParseObject("Servicio");
+                    values.put(Contract.Column.NAME, Name);
+                    values.put(Contract.Column.HORARIO,semana);
+                    values.put("local", ParseUser.getCurrentUser());
+                    ParseACL acl = new ParseACL();
+                    acl.setPublicReadAccess(true);
+                    acl.setPublicWriteAccess(true);
+                    values.setACL(acl);
+                    values.pinInBackground();
+                    values.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            dialog.dismiss();
+                            finish();
                         }
-                    }
-                }
-
-            }
-        });
-
-
-        calendario.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                Toast.makeText(AgregarServicio.this,"Dia "+dayOfMonth,Toast.LENGTH_SHORT).show();
+                    });
+                        }
             }
         });
 
