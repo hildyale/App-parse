@@ -39,6 +39,7 @@ public class ActualizarServicelocal extends IntentService {
             if ((ni != null) && (ni.isConnected())) {
                 if (!ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
                     borrar();
+                    citas();
                     empleados();
                     servicios();
                     semana();
@@ -62,9 +63,9 @@ public class ActualizarServicelocal extends IntentService {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(ActualizarServicelocal.this, R.string.nosynced, Toast.LENGTH_LONG).show();
                         if(show) {
                             sendBroadcast(new Intent("ccmovil.gr7.rapidturns.NEW_EMPLEADOS"));
+                            Toast.makeText(ActualizarServicelocal.this, R.string.nosynced, Toast.LENGTH_LONG).show();
                         }else{
                             sendBroadcast(new Intent("ccmovil.gr7.rapidturns.NEW_EMPLEADOSv2"));
                         }
@@ -78,6 +79,27 @@ public class ActualizarServicelocal extends IntentService {
         ParseObject.unpinAllInBackground();
     }
 
+
+    public void citas() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Cita");
+        query.whereEqualTo("local", ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> citas, ParseException e) {
+                if (e == null) {
+                    int size = citas.size();
+                    for (int i = 0; i < size; i++) {
+                        ParseObject cita = citas.get(i);
+                        cita.pinInBackground();
+                    }
+                } else {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            e.getMessage() + " citas",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
 
     public void empleados() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Empleado");

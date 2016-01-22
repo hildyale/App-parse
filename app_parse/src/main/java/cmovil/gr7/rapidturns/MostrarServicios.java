@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -50,6 +52,7 @@ public class MostrarServicios extends Fragment {
     private int color;
     private String msn;
     private String title;
+    private TextView text;
     ProgressDialog dialog;
 
     public static MostrarServicios newInstance(int sectionNumber) {
@@ -70,20 +73,18 @@ public class MostrarServicios extends Fragment {
                              Bundle savedInstanceState) {
         color = getResources().getColor(R.color.darkgrey);
         msn = getActivity().getString(R.string.removeMsn);
+        mContext = getActivity().getApplicationContext();
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage(getResources().getString(R.string.login));
         title = getActivity().getString(R.string.removeTitle);
         dataexists();
-        View v;
+        dataexists();
+        View v = inflater.inflate(R.layout.listalocal, container, false);
+        text = (TextView) v.findViewById(R.id.text);
+        lista = (ListView) v.findViewById(R.id.ListView);
         if(dataexists) {
-            v = inflater.inflate(R.layout.listalocal, container, false);
-            lista = (ListView) v.findViewById(R.id.ListView);
-            mContext = getActivity().getApplicationContext();
-
+            text.setVisibility(View.GONE);
             records();
-       /* lista.setAdapter(new AdapterServicios(
-                getActivity().getActionBar().getThemedContext(),
-                records,"#ffffff"));*/
             lista.setItemChecked(mCurrentSelectedPosition, true);
             lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
@@ -100,8 +101,7 @@ public class MostrarServicios extends Fragment {
             });
             registerForContextMenu(lista);
         }else{
-            v = inflater.inflate(R.layout.vacio,container,false);
-            TextView text = (TextView) v.findViewById(R.id.text);
+            lista.setVisibility(View.GONE);
             String Text = text.getText()+"";
             text.setTextColor(getResources().getColor(R.color.amber2));
             text.setText(Text+getResources().getString(R.string.title_section6));
@@ -141,7 +141,7 @@ public class MostrarServicios extends Fragment {
                 return true;
 
             case 1:
-                ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Empleado");
+                ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Servicio");
                 query1.fromLocalDatastore();
                 query1.include("local");
                 query1.findInBackground(new FindCallback<ParseObject>() {
@@ -156,18 +156,50 @@ public class MostrarServicios extends Fragment {
                                         .setTitle(title);
                                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialo, int id) {
+                                        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                                        NetworkInfo ni = cm.getActiveNetworkInfo();
+                                        if ((ni != null) && (ni.isConnected())) {
                                         dialog.show();
                                         ParseObject semana = empleado.getParseObject("horario");
                                         borrar(semana);
+                                        borrarCitas(empleado);
                                         List<ParseObject> list = Arrays.asList(empleado, semana);
                                         ParseObject.unpinAllInBackground(list, new DeleteCallback() {
                                             @Override
                                             public void done(ParseException e) {
-                                                records();
                                                 dialog.dismiss();
+                                                dataexists();
+                                                if (dataexists) {
+                                                    text.setVisibility(View.GONE);
+                                                    lista.setVisibility(View.VISIBLE);
+                                                    records();
+                                                    lista.setItemChecked(mCurrentSelectedPosition, true);
+                                                    lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                        public void onItemClick(AdapterView<?> parent, View view,
+                                                                                int position, long id) {
+                                                            Object[] o = (Object[]) lista.getItemAtPosition(position);
+                                                            String str = (String) o[0];//As you are using Default String Adapter
+                                                            Intent intent = new Intent(getActivity().getApplicationContext(), VerCalendario.class);
+                                                            intent.putExtra("nombre", str);
+                                                            intent.putExtra("id", o[2] + "");
+                                                            intent.putExtra("type", "Servicio");
+                                                            startActivity(intent);
+                                                        }
+                                                    });
+                                                    registerForContextMenu(lista);
+                                                } else {
+                                                    text.setVisibility(View.VISIBLE);
+                                                    lista.setVisibility(View.GONE);
+                                                    String Text = text.getText() + "";
+                                                    text.setTextColor(getResources().getColor(R.color.teal3));
+                                                    text.setText(Text + getResources().getString(R.string.title_section5));
+                                                }
                                             }
                                         });
                                         ParseObject.deleteAllInBackground(list);
+                                        }else{
+                                            Toast.makeText(mContext, "NO INTERNET" , Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 });
                                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -202,9 +234,23 @@ public class MostrarServicios extends Fragment {
         ParseObject.deleteAllInBackground(lista);
     }
 
-    public void dataExistsTrue(){
-        dataexists = true;
+    public void borrarCitas(ParseObject servicio){
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Cita");
+        query1.fromLocalDatastore();
+        query1.whereEqualTo("Servicio", servicio);
+        query1.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                int size = objects.size();
+                for (int i = 0; i < size; i++) {
+                    ParseObject cita = objects.get(i);
+                    cita.unpinInBackground();
+                    cita.saveInBackground();
+                }
+            }
+        });
     }
+
 
     public void dataexists(){
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Servicio");
@@ -213,7 +259,9 @@ public class MostrarServicios extends Fragment {
         try{
             List<ParseObject> servicios = query.find();
             if (servicios.size() != 0){
-                dataExistsTrue();
+                dataexists = true;
+            }else{
+                dataexists = false;
             }
         }catch (ParseException e){
             e.printStackTrace();

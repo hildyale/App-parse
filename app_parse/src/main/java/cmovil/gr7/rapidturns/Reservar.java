@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -173,15 +174,28 @@ public class Reservar extends Activity {
             ParseObject dia = (ParseObject)semana.get(dias[i]);
             for(int j=0;j<11;j++){
                 a = images[i][j];
-                    String cita = (String) dia.get(horas[j]);
+                String cita ="";
+                try{
+                    cita = (String) dia.get(horas[j]);
                     if(cita!=null) {
-                        a.setImageResource(R.drawable.backfalse);
-                        setlistenernoenbaled(a);
+                        if(!cita.equals("")){
+                            a.setImageResource(R.drawable.backfalse);
+                            setlistenernoenbaled(a);
+                        }else{
+                            a.setImageResource(R.drawable.backtrue);
+                            setlistener(a, i, j);
+                        }
                     }
                     else{
                         a.setImageResource(R.drawable.backtrue);
                         setlistener(a, i, j);
                     }
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(), R.string.nocalendar , Toast.LENGTH_SHORT).show();
+                    finish();
+                    return;
+                }
+
             }
 
         }
@@ -208,18 +222,30 @@ public class Reservar extends Activity {
                         .setTitle(title);
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        records(i,j);
+                        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                        NetworkInfo ni = cm.getActiveNetworkInfo();
+                        if ((ni != null) && (ni.isConnected())) {
+                            records(i, j);
+                        }else{
+                            Toast.makeText(getApplicationContext(), "NO INTERNET" , Toast.LENGTH_SHORT).show();
+                        }
+                        }
                     }
-                });
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //nothing
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
+
+                    );
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+
+                            {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //nothing
+                                }
+                            }
+
+                    );
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            });
     }
 
 
@@ -250,10 +276,6 @@ public class Reservar extends Activity {
                     String msn=ParseUser.getCurrentUser().getString("name");
                     ParseObject dia = (ParseObject)week.get(dias[i]);
                     dia.put(horas[j],msn);
-
-                    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo ni = cm.getActiveNetworkInfo();
-                    if ((ni != null) && (ni.isConnected())) {
                         values.pinInBackground();
                         values.saveInBackground(new SaveCallback() {
                             @Override
@@ -267,9 +289,7 @@ public class Reservar extends Activity {
                                 }
                             }
                         });
-                    }else{
-                        Toast.makeText(getApplicationContext(), "NO INTERNET" , Toast.LENGTH_SHORT).show();
-                    }
+
                 } else {
                     // something went wrong
                 }

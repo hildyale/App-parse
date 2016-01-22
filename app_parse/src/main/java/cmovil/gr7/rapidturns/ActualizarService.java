@@ -66,11 +66,11 @@ public class ActualizarService extends IntentService {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(ActualizarService.this, R.string.nosynced, Toast.LENGTH_LONG).show();
                         if(show) {
-                            sendBroadcast(new Intent("ccmovil.gr7.rapidturns.NEW_EMPLEADOS"));
+                            sendBroadcast(new Intent("ccmovil.gr7.rapidturns.NEW_DATES"));
+                            Toast.makeText(ActualizarService.this, R.string.nosynced, Toast.LENGTH_LONG).show();
                         }else{
-                            sendBroadcast(new Intent("ccmovil.gr7.rapidturns.NEW_EMPLEADOSv2"));
+                            sendBroadcast(new Intent("ccmovil.gr7.rapidturns.NEW_DATESv2"));
                         }
                     }
                 });

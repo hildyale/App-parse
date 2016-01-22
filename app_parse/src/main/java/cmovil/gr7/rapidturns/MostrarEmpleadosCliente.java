@@ -42,6 +42,8 @@ public class MostrarEmpleadosCliente extends Fragment {
     private Context mContext;
     private boolean dataexists=false;
     private ParseUser user;
+    private TextView text;
+    private int color;
 
 
     public static MostrarEmpleadosCliente newInstance(String id) {
@@ -62,15 +64,14 @@ public class MostrarEmpleadosCliente extends Fragment {
                              Bundle savedInstanceState) {
         user();
         dataexists();
-        View v;
+        color = getResources().getColor(R.color.darkgrey);
+        View v = inflater.inflate(R.layout.listacliente, container, false);
         mContext = getActivity().getApplicationContext();
+        text = (TextView) v.findViewById(R.id.text);
+        lista = (ListView) v.findViewById(R.id.ListView);
         if(dataexists) {
-            v = inflater.inflate(R.layout.listacliente, container, false);
-            lista = (ListView) v.findViewById(R.id.ListView);
+            text.setVisibility(View.GONE);
             records();
-        /*lista.setAdapter(new AdapterEmpleados(
-                getActivity().getActionBar().getThemedContext(),
-                records,"#000000"));*/
             lista.setItemChecked(mCurrentSelectedPosition, true);
             lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
@@ -87,8 +88,7 @@ public class MostrarEmpleadosCliente extends Fragment {
                 }
             });
         }else{
-            v = inflater.inflate(R.layout.vacio,container,false);
-            TextView text = (TextView) v.findViewById(R.id.text);
+            lista.setVisibility(View.GONE);
             String Text = text.getText()+"";
             text.setTextColor(getResources().getColor(R.color.teal3));
             text.setText(Text+getResources().getString(R.string.title_section5));
@@ -159,7 +159,7 @@ public class MostrarEmpleadosCliente extends Fragment {
                         }
                         lista.setAdapter(new AdapterEmpleados(
                                 mContext,
-                                records, getResources().getColor(R.color.darkgrey)));
+                                records, color));
                     } else {
                         // handle Parse Exception here
                     }

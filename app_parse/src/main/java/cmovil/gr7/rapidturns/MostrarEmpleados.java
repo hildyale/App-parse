@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -63,6 +65,7 @@ public class MostrarEmpleados extends Fragment {
     private String title;
     ProgressDialog dialog;
     private int color;
+    private TextView text;
 
 
     public static MostrarEmpleados newInstance(int sectionNumber) {
@@ -87,15 +90,13 @@ public class MostrarEmpleados extends Fragment {
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage(getResources().getString(R.string.login));
         title = getActivity().getString(R.string.removeTitle);
-        fromString = getResources().getString(R.string.from);
-        toString= getResources().getString(R.string.to);
         color = getResources().getColor(R.color.darkgrey);
         dataexists();
-        View v;
+        View v = inflater.inflate(R.layout.listalocal, container, false);
+        text = (TextView) v.findViewById(R.id.text);
+        lista = (ListView) v.findViewById(R.id.ListView);
         if(dataexists) {
-            v = inflater.inflate(R.layout.listalocal, container, false);
-            lista = (ListView) v.findViewById(R.id.ListView);
-
+            text.setVisibility(View.GONE);
             records();
             lista.setItemChecked(mCurrentSelectedPosition, true);
             lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -113,8 +114,7 @@ public class MostrarEmpleados extends Fragment {
             });
             registerForContextMenu(lista);
         }else{
-            v = inflater.inflate(R.layout.vacio,container,false);
-            TextView text = (TextView) v.findViewById(R.id.text);
+            lista.setVisibility(View.GONE);
             String Text = text.getText()+"";
             text.setTextColor(getResources().getColor(R.color.amber2));
             text.setText(Text+getResources().getString(R.string.title_section5));
@@ -169,18 +169,51 @@ public class MostrarEmpleados extends Fragment {
                                         .setTitle(title);
                                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialo, int id) {
-                                        dialog.show();
-                                        ParseObject semana = empleado.getParseObject("horario");
-                                        borrar(semana);
-                                        List<ParseObject> list = Arrays.asList(empleado, semana);
-                                        ParseObject.unpinAllInBackground(list, new DeleteCallback() {
-                                            @Override
-                                            public void done(ParseException e) {
-                                                records();
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                        ParseObject.deleteAllInBackground(list);
+                                        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                                        NetworkInfo ni = cm.getActiveNetworkInfo();
+                                        if ((ni != null) && (ni.isConnected())) {
+                                            dialog.show();
+                                            ParseObject semana = empleado.getParseObject("horario");
+                                            borrar(semana);
+                                            borrarCitas(empleado);
+                                            List<ParseObject> list = Arrays.asList(empleado, semana);
+                                            ParseObject.unpinAllInBackground(list, new DeleteCallback() {
+                                                @Override
+                                                public void done(ParseException e) {
+                                                    dialog.dismiss();
+                                                    dataexists();
+                                                    if (dataexists) {
+                                                        text.setVisibility(View.GONE);
+                                                        lista.setVisibility(View.VISIBLE);
+                                                        records();
+                                                        lista.setItemChecked(mCurrentSelectedPosition, true);
+                                                        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                            public void onItemClick(AdapterView<?> parent, View view,
+                                                                                    int position, long id) {
+                                                                Object[] o = (Object[]) lista.getItemAtPosition(position);
+                                                                String str = (String) o[0];//As you are using Default String Adapter
+                                                                Intent intent = new Intent(getActivity().getApplicationContext(), VerCalendario.class);
+                                                                intent.putExtra("nombre", str);
+                                                                intent.putExtra("id", o[3] + "");
+                                                                intent.putExtra("type", "Empleado");
+                                                                startActivity(intent);
+                                                            }
+                                                        });
+                                                        registerForContextMenu(lista);
+                                                    } else {
+                                                        text.setVisibility(View.VISIBLE);
+                                                        lista.setVisibility(View.GONE);
+                                                        String Text = text.getText() + "";
+                                                        text.setTextColor(getResources().getColor(R.color.teal3));
+                                                        text.setText(Text + getResources().getString(R.string.title_section5));
+                                                    }
+                                                }
+                                            });
+                                            ParseObject.deleteAllInBackground(list);
+
+                                        } else {
+                                            Toast.makeText(mContext, "NO INTERNET", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 });
                                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -202,6 +235,23 @@ public class MostrarEmpleados extends Fragment {
         }
     }
 
+    public void borrarCitas(ParseObject empleado){
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Cita");
+        query1.fromLocalDatastore();
+        query1.whereEqualTo("Empleado",empleado);
+        query1.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                int size = objects.size();
+                for(int i=0;i<size;i++){
+                    ParseObject cita = objects.get(i);
+                    cita.unpinInBackground();
+                    cita.saveInBackground();
+                }
+            }
+        });
+    }
+
     public void borrar(ParseObject semana){
         ParseObject Lunes = semana.getParseObject("Lunes");
         ParseObject Martes = semana.getParseObject("Martes");
@@ -210,13 +260,9 @@ public class MostrarEmpleados extends Fragment {
         ParseObject Viernes = semana.getParseObject("Viernes");
         ParseObject Sabado = semana.getParseObject("Sabado");
         ParseObject Domingo = semana.getParseObject("Domingo");
-        List<ParseObject> lista =  Arrays.asList(Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo);
+        List<ParseObject> lista = Arrays.asList(Lunes, Martes, Miercoles, Jueves, Viernes, Sabado, Domingo);
         ParseObject.unpinAllInBackground(lista);
         ParseObject.deleteAllInBackground(lista);
-    }
-
-    public void dataExistsTrue(){
-        dataexists = true;
     }
 
     public void dataexists(){
@@ -225,7 +271,9 @@ public class MostrarEmpleados extends Fragment {
         try{
             List<ParseObject> empleados = query.find();
             if (empleados.size() != 0){
-                dataExistsTrue();
+                dataexists = true;
+            }else{
+                dataexists = false;
             }
         }catch (ParseException e){
             e.printStackTrace();
@@ -259,13 +307,17 @@ public class MostrarEmpleados extends Fragment {
                             String name = empleado.getString(NAME);
                             SimpleDateFormat ft =
                                     new SimpleDateFormat("yyyy.MM.dd");
-                            String created_at = ft.format(empleado.getCreatedAt());
-                            String sex = empleado.getString(SEX);
-                            String id = empleado.getObjectId();
-                            records[i][0] = name;
-                            records[i][1] = created_at;
-                            records[i][2] = sex;
-                            records[i][3] = id;
+                            try {
+                                String created_at = ft.format(empleado.getCreatedAt());
+                                String sex = empleado.getString(SEX);
+                                String id = empleado.getObjectId();
+                                records[i][0] = name;
+                                records[i][1] = created_at;
+                                records[i][2] = sex;
+                                records[i][3] = id;
+                            }catch (Exception ee){
+                                ee.printStackTrace();
+                            }
                         }
                         lista.setAdapter(new AdapterEmpleados(
                                 mContext,
@@ -283,7 +335,32 @@ public class MostrarEmpleados extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("TimelineReceiver", "onReceived");
-            records();
+            dataexists();
+            if(dataexists) {
+                text.setVisibility(View.GONE);
+                lista.setVisibility(View.VISIBLE);
+                records();
+                lista.setItemChecked(mCurrentSelectedPosition, true);
+                lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        Object[] o = (Object[]) lista.getItemAtPosition(position);
+                        String str = (String) o[0];//As you are using Default String Adapter
+                        Intent intent = new Intent(getActivity().getApplicationContext(), VerCalendario.class);
+                        intent.putExtra("nombre", str);
+                        intent.putExtra("id", o[3] + "");
+                        intent.putExtra("type", "Empleado");
+                        startActivity(intent);
+                    }
+                });
+                registerForContextMenu(lista);
+            }else{
+                text.setVisibility(View.VISIBLE);
+                lista.setVisibility(View.GONE);
+                String Text = text.getText()+"";
+                text.setTextColor(getResources().getColor(R.color.teal3));
+                text.setText(Text+getResources().getString(R.string.title_section5));
+            }
         }
     }
 

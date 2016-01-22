@@ -48,53 +48,47 @@ public class Register extends Activity {
                 if (usernametxt.equals("") || passwordtxt.equals("") || emailtxt.equals("") || nametxt.equals("")) {
                     Error(R.string.error_field_required);
                 } else {
-                    final ProgressDialog dialog = new ProgressDialog(Register.this);
-                    dialog.setMessage(getResources().getString(R.string.checkin));
-                    dialog.show();
-                    final ParseUser user = new ParseUser();
-                    user.setUsername(usernametxt);
-                    user.setPassword(passwordtxt);
-                    user.setEmail(emailtxt);
-                    if(cliente.isChecked()) {
-                        user.put("type", "cliente");
-                    }else{
-                        user.put("type","local");
-                    }
-                    user.put("name",nametxt);
-                    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo ni = cm.getActiveNetworkInfo();
-                    if ((ni != null) && (ni.isConnected())) {
-                    user.signUpInBackground(new SignUpCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Toast.makeText(getApplicationContext(), "Successfully Signed up!", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                                if(user.getString("type").equals("cliente")){
-                                    startActivity(new Intent(Register.this, ClientActivity.class));
-                                    Intent a = new Intent(Register.this,ActualizarService.class);
-                                    a.putExtra("show",false);
-                                    startService(a);
-                                }else{
-                                    startActivity(new Intent(Register.this, LocalActivity.class));
-                                    Intent a = new Intent(Register.this,ActualizarServicelocal.class);
-                                    a.putExtra("show",false);
-                                    startService(a);
-                                }
-                                finish();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Signed up error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                            }
-
+                    if (usernametxt.length()>25 || nametxt.length()>25 || passwordtxt.length()>25) {
+                        Error(R.string.max25);
+                    } else {
+                        final ProgressDialog dialog = new ProgressDialog(Register.this);
+                        dialog.setMessage(getResources().getString(R.string.checkin));
+                        dialog.show();
+                        final ParseUser user = new ParseUser();
+                        user.setUsername(usernametxt);
+                        user.setPassword(passwordtxt);
+                        user.setEmail(emailtxt);
+                        if (cliente.isChecked()) {
+                            user.put("type", "cliente");
+                        } else {
+                            user.put("type", "local");
                         }
-                    });
-                    }else{
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "No Internet",
-                                Toast.LENGTH_LONG).show();
-                                dialog.dismiss();
+                        user.put("name", nametxt);
+                        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                        NetworkInfo ni = cm.getActiveNetworkInfo();
+                        if ((ni != null) && (ni.isConnected())) {
+                            user.signUpInBackground(new SignUpCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        Toast.makeText(getApplicationContext(), "Successfully Signed up!", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                        startActivity(new Intent(Register.this, DispatchActivity.class));
+                                        finish();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Signed up error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    }
+
+                                }
+                            });
+                        } else {
+                            Toast.makeText(
+                                    getApplicationContext(),
+                                    "No Internet",
+                                    Toast.LENGTH_LONG).show();
+                            dialog.dismiss();
+                        }
                     }
                 }
             }

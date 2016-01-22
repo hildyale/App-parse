@@ -2,8 +2,10 @@ package cmovil.gr7.rapidturns;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -13,18 +15,53 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.parse.ParseUser;
+
 
 public class LocalActivity extends Activity
         implements NavigationDrawerFragmentLocal.NavigationDrawerCallbacks {
 
     private NavigationDrawerFragmentLocal mNavigationDrawerFragment;
-
+    private AlertDialog.Builder builder,builder2;
     private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local);
+
+        builder = new AlertDialog.Builder(LocalActivity.this);
+        builder.setTitle(R.string.exit);
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
+
+        builder2 = new AlertDialog.Builder(LocalActivity.this);
+        builder2.setTitle(R.string.logout);
+        builder2.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                ParseUser.logOut();
+                finish();
+                Intent cerrar = new Intent(LocalActivity.this, DispatchActivity.class);
+                startActivity(cerrar);
+            }
+        });
+        builder2.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
 
         mNavigationDrawerFragment = (NavigationDrawerFragmentLocal)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -112,23 +149,19 @@ public class LocalActivity extends Activity
                 finish();
                 return true;
 
-            case R.id.action_settings:
-
+            case R.id.acerca:
+                Intent c = new Intent(LocalActivity.this,Acerca.class);
+                c.putExtra("tema", true);
+                startActivity(c);
                 return true;
-            case R.id.action_example:
 
-                return true;
             case R.id.salir:
-                finish();
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_HOME);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                AlertDialog dialog = builder.create();
+                dialog.show();
                 return true;
             case R.id.cerrar_sesion:
-                finish();
-            Intent cerrar = new Intent(this, Login.class);
-            startActivity(cerrar);
+                AlertDialog dialog2 = builder2.create();
+                dialog2.show();
                 return true;
             default:
                 return false;

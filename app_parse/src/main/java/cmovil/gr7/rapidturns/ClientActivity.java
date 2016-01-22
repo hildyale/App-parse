@@ -2,10 +2,13 @@ package cmovil.gr7.rapidturns;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.DialogPreference;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,11 +34,45 @@ public class ClientActivity extends Activity
      */
     private CharSequence mTitle;
     private int Position;
+    private AlertDialog.Builder builder,builder2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        builder = new AlertDialog.Builder(ClientActivity.this);
+        builder.setTitle(R.string.exit);
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
+
+        builder2 = new AlertDialog.Builder(ClientActivity.this);
+        builder2.setTitle(R.string.logout);
+        builder2.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                ParseUser.logOut();
+                finish();
+                Intent cerrar = new Intent(ClientActivity.this, DispatchActivity.class);
+                startActivity(cerrar);
+            }
+        });
+        builder2.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -45,7 +82,6 @@ public class ClientActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-
     }
 
     @Override
@@ -69,11 +105,6 @@ public class ClientActivity extends Activity
                             .replace(R.id.container, MostrarFavoritos.newInstance(position + 1))
                             .commit();
                     break;
-                case 3:
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.container, MostrarOtros.newInstance(position + 1))
-                            .commit();
-                    break;
             }
     }
 
@@ -87,9 +118,6 @@ public class ClientActivity extends Activity
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
-                break;
-            case 4:
-                mTitle = getString(R.string.title_section4);
                 break;
         }
     }
@@ -121,35 +149,23 @@ public class ClientActivity extends Activity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.borrar:
-                Intent b = new Intent(ClientActivity.this,Borrar.class);
-                b.putExtra("show",true);
-                startService(b);
-                return true;
-
             case R.id.actualizar:
                 Intent a = new Intent(ClientActivity.this,ActualizarService.class);
                 a.putExtra("show", true);
                 startService(a);
                 return true;
-            case R.id.action_settings:
-
-                return true;
-            case R.id.action_example:
-
+            case R.id.acerca:
+                Intent c = new Intent(ClientActivity.this,Acerca.class);
+                c.putExtra("tema", false);
+                startActivity(c);
                 return true;
             case R.id.salir:
-                finish();
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_HOME);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                AlertDialog dialog = builder.create();
+                dialog.show();
                 return true;
             case R.id.cerrar_sesion:
-                finish();
-                ParseUser.logOut();
-                Intent cerrar = new Intent(this, Login.class);
-                startActivity(cerrar);
+                AlertDialog dialog2 = builder2.create();
+                dialog2.show();
                 return true;
             default:
                 return false;
@@ -160,14 +176,20 @@ public class ClientActivity extends Activity
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("accion ", "on resume");
+        Log.d("Client ", "on resume");
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("accion ", "on pause");
+        Log.d("Client ", "on pause " + ParseUser.getCurrentUser().getUsername());
+
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("Client ", "on destroy");
+    }
 }

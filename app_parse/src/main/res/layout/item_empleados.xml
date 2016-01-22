@@ -34,7 +34,7 @@
         android:paddingRight="5dp"
         android:layout_alignEnd="@+id/nombre"
         android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@+id/nombre"
+        android:layout_alignTop="@+id/nombre"
         android:textColor="#000"
         android:layout_marginEnd="10dp"
         />

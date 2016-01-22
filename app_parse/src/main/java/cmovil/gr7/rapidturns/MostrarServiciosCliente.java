@@ -41,6 +41,9 @@ public class MostrarServiciosCliente extends Fragment {
     private Context mContext;
     private boolean dataexists=false;
     private ParseUser user;
+    private TextView text;
+    private int color;
+
 
 
     public static MostrarServiciosCliente newInstance(String id) {
@@ -61,11 +64,13 @@ public class MostrarServiciosCliente extends Fragment {
                              Bundle savedInstanceState) {
         user();
         dataexists();
+        color = getResources().getColor(R.color.darkgrey);
         mContext = getActivity().getApplicationContext();
-        View v;
+        View v = inflater.inflate(R.layout.listacliente, container, false);
+        text = (TextView) v.findViewById(R.id.text);
+        lista = (ListView) v.findViewById(R.id.ListView);
         if(dataexists) {
-            v = inflater.inflate(R.layout.listacliente, container, false);
-            lista = (ListView) v.findViewById(R.id.ListView);
+            text.setVisibility(View.GONE);
             records();
             lista.setItemChecked(mCurrentSelectedPosition, true);
 
@@ -77,15 +82,14 @@ public class MostrarServiciosCliente extends Fragment {
                     String str = (String) o[0];//As you are using Default String Adapter
                     Intent intent = new Intent(getActivity().getApplicationContext(), Reservar.class);
                     intent.putExtra("nombre", str);
-                    intent.putExtra("id", o[3] + "");
-                    intent.putExtra("local", o[4] + "");
+                    intent.putExtra("id", o[2] + "");
+                    intent.putExtra("local", o[3] + "");
                     intent.putExtra("type", "Servicio");
                     startActivity(intent);
                 }
             });
         }else{
-            v = inflater.inflate(R.layout.vacio,container,false);
-            TextView text = (TextView) v.findViewById(R.id.text);
+            lista.setVisibility(View.GONE);
             String Text = text.getText()+"";
             text.setTextColor(getResources().getColor(R.color.teal3));
             text.setText(Text+getResources().getString(R.string.title_section6));
@@ -146,22 +150,18 @@ public class MostrarServiciosCliente extends Fragment {
                         for (int i = 0; i < size; i++) {
                             ParseObject servicio = servicios.get(i);
                             String name = servicio.getString(NAME);
-                            String hora = servicio.getString(HORARIO);
                             String id = servicio.getObjectId();
                             SimpleDateFormat ft =
                                     new SimpleDateFormat("yyyy.MM.dd");
                             String created_at = ft.format(servicio.getCreatedAt());
-                            int from = servicio.getInt(FROM);
-                            int to = servicio.getInt(TO);
                             records[i][0] = name;
-                            records[i][1] = hora + " " + getString(R.string.from) + " " + from + " " + getString(R.string.to) + " " + to;
-                            records[i][2] = created_at;
-                            records[i][3] = id;
-                            records[i][4] = Id;
+                            records[i][1] = created_at;
+                            records[i][2] = id;
+                            records[i][3] = Id;
                         }
                         lista.setAdapter(new AdapterServicios(
                                 mContext,
-                                records, getResources().getColor(R.color.darkgrey)));
+                                records, color));
                     } else {
                         // handle Parse Exception here
                     }

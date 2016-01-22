@@ -113,8 +113,7 @@ public class VerLocal extends Activity {
                         acl.setPublicReadAccess(true);
                         acl.setPublicWriteAccess(true);
                         values.setACL(acl);
-
-                        values.saveInBackground(new SaveCallback() {
+                        values.pinInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
                                 Toast.makeText(
@@ -123,7 +122,7 @@ public class VerLocal extends Activity {
                                         Toast.LENGTH_LONG).show();
                             }
                         });
-                        values.pinInBackground();
+                        values.saveEventually();
                     } else {
                         // something went wrong
                     }

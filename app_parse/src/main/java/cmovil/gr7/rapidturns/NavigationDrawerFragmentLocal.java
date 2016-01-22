@@ -22,6 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.ParseUser;
+
 
 public class NavigationDrawerFragmentLocal extends Fragment {
 
@@ -228,11 +230,6 @@ public class NavigationDrawerFragmentLocal extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -244,7 +241,8 @@ public class NavigationDrawerFragmentLocal extends Fragment {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
+        String mTitle = getString(R.string.app_name)+" - "+ ParseUser.getCurrentUser().get("name");
+        actionBar.setTitle(mTitle);
     }
 
     private ActionBar getActionBar() {

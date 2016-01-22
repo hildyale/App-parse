@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 
 import com.parse.ParseUser;
 
@@ -23,31 +21,15 @@ public class DispatchActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        filter1 = new IntentFilter("ccmovil.gr7.rapidturns.NEW_DATESv2");
-        receiver1 =  new TimelineReceiver(true);
-        registerReceiver(receiver1, filter1);
-        filter2 = new IntentFilter("ccmovil.gr7.rapidturns.NEW_EMPLEADOSv2");
-        receiver2 =  new TimelineReceiver(false);
-        registerReceiver(receiver2, filter2);
-        if (ParseUser.getCurrentUser().getUsername() != null) {
-            if(ParseUser.getCurrentUser().getString("type").equals("cliente")){
-                Intent a = new Intent(DispatchActivity.this,ActualizarService.class);
-                a.putExtra("show", false);
-                startService(a);
-            }else{
-                Intent a = new Intent(DispatchActivity.this,ActualizarServicelocal.class);
-                a.putExtra("show", false);
-                startService(a);
-            }
-        } else {
-            startActivity(new Intent(this, Login.class));
-        }
+        setContentView(R.layout.dispatch_activity);
+        Log.d("Dispatch: ", "onCreate");
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("Dispatch: ","onResume");
         filter1 = new IntentFilter("ccmovil.gr7.rapidturns.NEW_DATESv2");
         receiver1 =  new TimelineReceiver(true);
         registerReceiver(receiver1, filter1);
@@ -90,6 +72,7 @@ public class DispatchActivity extends Activity {
         super.onPause();
         unregisterReceiver(receiver1);
         unregisterReceiver(receiver2);
+        Log.d("Dispatch: ", "onPause");
     }
 
 }

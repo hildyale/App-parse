@@ -169,17 +169,39 @@ public class VerCalendario extends Activity {
             ParseObject dia = (ParseObject)semana.get(dias[i]);
             for(int j=0;j<11;j++){
                 a = images[i][j];
-                    String cita =  (String)dia.get(horas[j]);
+                String cita ="";
+                try{
+                    cita = (String) dia.get(horas[j]);
                     if(cita!=null) {
-                        a.setImageResource(R.drawable.backfalse);
-                        setlistener(a, i, j, cita);
+                        if(!cita.equals("")){
+                            a.setImageResource(R.drawable.backfalse);
+                            setlistener(a, i, j,cita);
+                        }else{
+                            a.setImageResource(R.drawable.backtrue);
+                            setlistenerenbaled(a);
+                        }
                     }
                     else{
                         a.setImageResource(R.drawable.backtrue);
+                        setlistenerenbaled(a);
                     }
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(), R.string.nocalendar , Toast.LENGTH_SHORT).show();
+                    finish();
+                    return;
+                }
             }
 
         }
+    }
+
+    public  void setlistenerenbaled(final ImageView a){
+        a.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(VerCalendario.this,getString(R.string.nodate),Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void setlistener(final ImageView a,final int i,final int j,final String title){

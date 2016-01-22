@@ -23,6 +23,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.security.PrivilegedActionException;
 import java.util.List;
 
 
@@ -35,6 +36,7 @@ public class MostrarFavoritos extends Fragment {
     private ListView lista;
     private Object[][] records;
     private Context mcontext;
+    private  TextView text;
     private boolean dataexists=false;
 
     public static MostrarFavoritos newInstance(int sectionNumber) {
@@ -79,8 +81,27 @@ public class MostrarFavoritos extends Fragment {
                             String id = local.getObjectId();
                             if(id.equals(Id)){
                                 favorite.deleteInBackground();
-                                favorite.unpinInBackground();
-                                records();
+                                try{
+                                favorite.unpin();
+                                } catch (ParseException ee)
+                                {e.printStackTrace();}
+                                dataexists();
+                                if(dataexists) {
+                                    text.setVisibility(View.GONE);
+                                    lista.setVisibility(View.VISIBLE);
+                                    records();
+                                    lista.setItemChecked(mCurrentSelectedPosition, true);
+                                    lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        public void onItemClick(AdapterView<?> parent, View view,
+                                                                int position, long id) {
+                                        }
+                                    });
+                                }else{
+                                    text.setVisibility(View.VISIBLE);
+                                    lista.setVisibility(View.GONE);
+                                    text.setTextColor(getResources().getColor(R.color.teal3));
+                                    text.setText("No " + getResources().getString(R.string.title_section3));
+                                }
                             }
 
                         }
@@ -111,17 +132,13 @@ public class MostrarFavoritos extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         dataexists();
-        View v;
+        View v = inflater.inflate(R.layout.listacliente, container, false);
+        mcontext = getActivity().getApplicationContext();
+        text = (TextView) v.findViewById(R.id.text);
+        lista = (ListView) v.findViewById(R.id.ListView);
         if(dataexists) {
-            lista = (ListView) inflater.inflate(R.layout.lista, container, false);
-            mcontext = getActivity().getApplicationContext();
-
+            text.setVisibility(View.GONE);
             records();
-        /*lista.setAdapter(new ArrayAdapter<String>(
-                getActivity().getActionBar().getThemedContext(),
-                R.layout.item_locales,
-                R.id.name,
-                getResources().getStringArray(R.array.favoritas)));*/
             lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
@@ -138,20 +155,16 @@ public class MostrarFavoritos extends Fragment {
             });
             registerForContextMenu(lista);
             lista.setItemChecked(mCurrentSelectedPosition, true);
-            return lista;
+
         }else{
-            v = inflater.inflate(R.layout.vacio,container,false);
-            TextView text = (TextView) v.findViewById(R.id.text);
+            lista.setVisibility(View.GONE);
             String Text = text.getText()+"";
             text.setTextColor(getResources().getColor(R.color.teal3));
             text.setText(Text+getResources().getString(R.string.title_section3));
-            return v;
         }
+        return v;
     }
 
-    public void dataExistsTrue(){
-        dataexists = true;
-    }
 
     public void dataexists(){
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Favorites");
@@ -159,7 +172,9 @@ public class MostrarFavoritos extends Fragment {
         try {
             List<ParseObject> favorites = query.find();
             if (favorites.size() != 0){
-                dataExistsTrue();
+                dataexists = true;
+            }else{
+                dataexists = false;
             }
         }catch (ParseException e){
             e.printStackTrace();

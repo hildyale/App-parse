@@ -51,6 +51,8 @@ public class MostrarCitas extends Fragment {
     private int mCurrentSelectedPosition=0;
     private static Context mContext;
     private boolean dataexists=false;
+    private String days[] = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
+    private String hours[] = {"hora8","hora9","hora10","hora11","hora12","hora13","hora14","hora15","hora16","hora17","hora18"};
     private static String[] dias;
     private static String[] horas = {"8:00 am","9:00am","10:00 am","11:00 am","12:00 pm","1:00 pm","2:00 pm","3:00 pm","4:00 pm","5:00 pm","6:00 pm"};
 
@@ -82,11 +84,6 @@ public class MostrarCitas extends Fragment {
             text.setVisibility(View.GONE);
             records();
             lista.setItemChecked(mCurrentSelectedPosition, true);
-            lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                }
-            });
             registerForContextMenu(lista);
         }else{
             lista.setVisibility(View.GONE);
@@ -127,9 +124,30 @@ public class MostrarCitas extends Fragment {
                             ParseObject cita = citas.get(i);
                             String id = cita.getObjectId();
                             if(id.equals(Id)){
-                                cita.deleteInBackground();
-                                cita.unpinInBackground();
-                                records();
+                                //cita.deleteInBackground();
+                                ParseObject semana = cita.getParseObject("semana");
+                                int x = cita.getInt("dia");
+                                int y = cita.getInt("hora");
+                                ParseObject dia = semana.getParseObject(days[x]);
+                                dia.put(hours[y], "");
+                                dia.saveEventually();
+                                dia.pinInBackground();
+                                try{
+                                cita.unpin();}catch (ParseException ee){e.printStackTrace();}
+                                cita.deleteEventually();
+                                dataexists();
+                                if(dataexists) {
+                                    text.setVisibility(View.GONE);
+                                    lista.setVisibility(View.VISIBLE);
+                                    records();
+                                    lista.setItemChecked(mCurrentSelectedPosition, true);
+
+                                }else{
+                                    text.setVisibility(View.VISIBLE);
+                                    lista.setVisibility(View.GONE);
+                                    text.setTextColor(getResources().getColor(R.color.teal3));
+                                    text.setText("No " + getResources().getString(R.string.title_section1));
+                                }
                             }
 
                         }
@@ -142,9 +160,6 @@ public class MostrarCitas extends Fragment {
         }
     }
 
-    public void dataExistsTrue(){
-        dataexists = true;
-    }
 
     public void dataexists(){
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Cita");
@@ -152,7 +167,9 @@ public class MostrarCitas extends Fragment {
         try {
             List<ParseObject> citas = query.find();
             if (citas.size() != 0){
-                dataExistsTrue();
+                dataexists = true;
+            }else{
+                dataexists = false;
             }
         }catch (ParseException e){
             e.printStackTrace();
@@ -163,7 +180,7 @@ public class MostrarCitas extends Fragment {
     public static void records() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Cita");
         query.fromLocalDatastore();
-        query.orderByAscending("createdAt");
+        query.orderByDescending("createdAt");
         query.include("local");
         query.include("Empleado");
         query.include("Servicio");
